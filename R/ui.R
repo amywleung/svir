@@ -12,7 +12,6 @@ navbarPage(theme = shinytheme("slate"),
   tabPanel(
     "Overall SVI",
     sidebarLayout(
-
       # sidebar panel with file upload
       sidebarPanel(
         fileInput(inputId="shp", label="Upload Shapefile", multiple=TRUE)),  # must upload all 6 shapefile extensions

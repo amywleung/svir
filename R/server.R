@@ -6,9 +6,11 @@ library(sp)
 library(leaflet)
 library(rgeos)
 library(viridis)
+library(stringr)
+library(dplyr)
 
 # Define server logic
-shinyServer(function(input, output) {
+function(input, output) {
   # create a PostgreSQL instance and create one connection
   drv <- dbDriver("PostgreSQL")
 
@@ -57,7 +59,7 @@ shinyServer(function(input, output) {
           # find intersections of user input and states and return geom
           con,
           query = sprintf(
-            "SELECT *
+            "SELECT public.svi2014_us.*, public.userext.wkb_geometry
             FROM public.svi2014_us, public.userext
             WHERE ST_Intersects(public.svi2014_us.geom, public.userext.wkb_geometry);"
           )
@@ -90,4 +92,4 @@ shinyServer(function(input, output) {
   # # disconnect db connection
   # dbDisconnect(con)
   # dbUnloadDriver(drv)
-})
+}
