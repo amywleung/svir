@@ -5,6 +5,7 @@ library(RPostgreSQL)
 library(sp)
 library(leaflet)
 library(rgeos)
+library(viridis)
 
 # Define server logic
 shinyServer(function(input, output) {
@@ -79,9 +80,10 @@ shinyServer(function(input, output) {
   observeEvent(input$shp, {
     if (!is.null(uploadShpfile())) {
       cent <- gCentroid(spgeom = uploadShpfile(), byid = FALSE)
+      inExt <- bbox(uploadShpfile())
       leafletProxy("map") %>%
         addPolygons(data = uploadShpfile()) %>%
-        setView(lat = slot(cent, "coords")[[2]], lng = slot(cent, "coords")[[1]], zoom = 5)
+        fitBounds(lng1 = inExt[1], lat1 = inExt[2], lng2 = inExt[3], lat2 = inExt[4])
     }
   })
 

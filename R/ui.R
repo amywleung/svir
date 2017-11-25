@@ -1,12 +1,17 @@
 library(shiny)
 library(leaflet)
+library(shinythemes)
+
+# Set limit for file upload
+options(shiny.maxRequestSize = 50*1024^2)
 
 # Define UI for file upload
-navbarPage(
+navbarPage(theme = shinytheme("slate"),
   "CDC's Social Vulnerability Index Map",
+  fluid = TRUE,
   tabPanel(
     "Overall SVI",
-    fluidPage(sidebarLayout(
+    sidebarLayout(
 
       # sidebar panel with file upload
       sidebarPanel(
@@ -16,13 +21,13 @@ navbarPage(
       mainPanel(
         leafletOutput("map")
       )
-    ))
+    )
   ),
   tabPanel(
     "Socioeconomic Status"
   ),
   tabPanel(
-    "Househould Composition & Disability"
+    "Household Composition & Disability"
   ),
   tabPanel(
     "Minority Status & Language"
