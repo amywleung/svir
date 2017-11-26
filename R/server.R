@@ -47,7 +47,7 @@ function(input, output) {
         )
       writeOGR(
         shpFile,
-        dsn = c("PG:user = 'postgres' dbname = 'svir' host = 'localhost'"),
+        dsn = c("PG:user = 'postgres' dbname = 'svir' password = 'gisde2018' host = 'localhost'"),
         # write shp to PG table & create sp index
         layer = "userext",
         overwrite_layer = TRUE,
@@ -117,8 +117,9 @@ function(input, output) {
         )
     }
   })
+  #downloadOutput({})
 
-  # # disconnect db connection
+  # disconnect db connection
   # dbDisconnect(con)
   # dbUnloadDriver(drv)
 }
