@@ -82,6 +82,56 @@ function(input, output) {
   # add polygons
   observeEvent(input$shp, {
     if (!is.null(uploadShpfile())) {
+      dat <- slot(uploadShpfile(), "data")
+      bb <- slot(uploadShpfile(), "bbox")
+      nndat <- dat$rpl_themes[!dat$rpl_themes == -999]
+      pal <- colorNumeric(palette = "viridis",
+                          domain = nndat)
+      labs <-
+        sprintf("<strong>%s</strong>%s<br/><strong>%s</strong>%g<br/><strong>%s</strong>%i",
+                "Location: ", dat$location[!dat$rpl_themes == -999],
+                "Overall SVI: ", round(nndat, digits = 2), "Total Flags: ",
+                dat$f_total[!dat$rpl_themes == -999]) %>%
+        lapply(HTML)
+      leafletProxy("map") %>%
+        addPolygons(
+          data = uploadShpfile(),
+          popup = ~ paste("Overall SVI: ",
+                          str_extract(round(
+                            nndat, digits = 2
+                          ), "^([^,]*)")),
+          smoothFactor = 0,
+          fillColor = ~ pal(nndat),
+          fillOpacity = 0.7,
+          color = "white",
+          weight = 1,
+          label = labs,
+          labelOptions = labelOptions(
+            textsize = "12px",
+            style = list(padding = "3px 5px",
+            opacity = 0.7)
+          ),
+          dashArray = "3",
+          highlightOptions = highlightOptions(
+            color = "white",
+            weight = 4,
+            fillOpacity = 0.7,
+            bringToFront = TRUE
+          )
+        ) %>%
+        addLegend(
+          "bottomright",
+          pal = pal,
+          values = nndat,
+          title = "Overall SVI",
+          opacity = 1
+        ) %>%
+        fitBounds(
+          lng1 = bb[1],
+          lat1 = bb[2],
+          lng2 = bb[3],
+          lat2 = bb[4]
+        )
 
       # Write spdf back to db
       pgInsert(
@@ -91,30 +141,6 @@ function(input, output) {
         data.obj = uploadShpfile(),
         overwrite = TRUE
       )
-      inExt <- slot(uploadShpfile(), "bbox")
-      pal <- colorNumeric(palette = "viridis",
-                          domain = slot(uploadShpfile(), "data")$rpl_themes)
-      leafletProxy("map") %>%
-        addPolygons(
-          data = uploadShpfile(),
-          stroke = FALSE,
-          smoothFactor = 0,
-          fillOpacity = 0.4,
-          color = ~ pal(slot(uploadShpfile(), "data")$rpl_themes)
-        ) %>%
-        addLegend(
-          "bottomright",
-          pal = pal,
-          values = slot(uploadShpfile(), "data")$rpl_themes,
-          title = "SVI",
-          opacity = 1
-        ) %>%
-        fitBounds(
-          lng1 = inExt[1],
-          lat1 = inExt[2],
-          lng2 = inExt[3],
-          lat2 = inExt[4]
-        )
     }
   })
 
