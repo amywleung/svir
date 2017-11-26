@@ -64,7 +64,8 @@ function(input, output) {
             WHERE ST_Intersects(public.svi2014_us.geom, public.userext.wkb_geometry);"
           )
           )
-      return(res)
+      svi <- svi_calc(con, res)
+      return(svi)
 
     } else {
       return()
@@ -81,11 +82,39 @@ function(input, output) {
   # add polygons
   observeEvent(input$shp, {
     if (!is.null(uploadShpfile())) {
-      cent <- gCentroid(spgeom = uploadShpfile(), byid = FALSE)
-      inExt <- bbox(uploadShpfile())
+
+      # Write spdf back to db
+      pgInsert(
+        con,
+        name = c("public", "regsvir"),
+        geom = "geom",
+        data.obj = uploadShpfile(),
+        overwrite = TRUE
+      )
+      inExt <- slot(uploadShpfile(), "bbox")
+      pal <- colorNumeric(palette = "viridis",
+                          domain = slot(uploadShpfile(), "data")$rpl_themes)
       leafletProxy("map") %>%
-        addPolygons(data = uploadShpfile()) %>%
-        fitBounds(lng1 = inExt[1], lat1 = inExt[2], lng2 = inExt[3], lat2 = inExt[4])
+        addPolygons(
+          data = uploadShpfile(),
+          stroke = FALSE,
+          smoothFactor = 0,
+          fillOpacity = 0.4,
+          color = ~ pal(slot(uploadShpfile(), "data")$rpl_themes)
+        ) %>%
+        addLegend(
+          "bottomright",
+          pal = pal,
+          values = slot(uploadShpfile(), "data")$rpl_themes,
+          title = "SVI",
+          opacity = 1
+        ) %>%
+        fitBounds(
+          lng1 = inExt[1],
+          lat1 = inExt[2],
+          lng2 = inExt[3],
+          lat2 = inExt[4]
+        )
     }
   })
 
