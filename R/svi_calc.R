@@ -1,3 +1,20 @@
+#' svi_calc
+#'
+#' Calculates the CDC/ATSDR formulated Social Vulnerability Index (SVI) using ACS 2010-2014 5-year
+#' estimates. User must specify a PostGIS database connection and the ST_Intersects() result as
+#' inputs.
+#'
+#' @param con A PostGIS database connection
+#' @param res The result from an ST_Intersects() of PostGIS spatial tables.
+#'
+#' @return A SpatialPolygons Data Frame object resulting from PostgreSQL connection \code{con}
+#' and the resulting object from PostGIS function ST_Intersects() \code{res}
+#'
+#' @example
+#' svi_calc(con, res)
+#'
+#' @export
+
 svi_calc <- function(con, res) {
 
   # Assign vector of column names
@@ -92,13 +109,4 @@ svi_calc <- function(con, res) {
 
   # Add the non-populated census tracts back into the main spatialpolygonsdataframe
   res <- rbind(res, nPop_res)
-
-  # Write spdf back to db
-  pgInsert(
-    con,
-    name = c("public", "regsvir"),
-    geom = "geom",
-    data.obj = res,
-    overwrite = TRUE
-  )
 }
