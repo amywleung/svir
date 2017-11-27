@@ -104,8 +104,7 @@ svi_calc <- function(con, res) {
 
   # Sum Flags to calculate total number of flags at each census tract
   res$f_total <- apply(slot(res, "data")[c(f_theme_nms, f_nms)], 1, sum)
-  all_flags <- c(f_theme_nms, f_nms)
-  res$f_total <- apply(slot(res, "data")[all_flags], 1, sum)
+
 
   # Add the non-populated census tracts back into the main spatialpolygonsdataframe
   res <- rbind(res, nPop_res)
