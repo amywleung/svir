@@ -1,0 +1,184 @@
+---
+title: "Regional Social Vulnerability Index"
+author: "Amy Leung, Maximilian Pschorr"
+date: "November 27, 2017"
+output: 
+  slidy_presentation: 
+    default:
+    fig_height: 4
+    fig_width: 6
+subtitle: <font size="6"> A Web Service for Calculating and Visualizing Regional SVI </font>
+---
+<style type="text/css">
+div.slide.titlepage {
+  text-align: center;
+  background: black;
+}
+
+div.slide.titlepage h1 {
+  padding-top: 10%;
+  margin-right: 0;
+}
+
+body
+{
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  width: 100%;
+  height: 100%;
+  color: blanchedalmond;
+  background-color: black;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+  font-size: 14pt;
+}
+
+table {
+  border-width: 1px;
+  border-spacing: 2px;
+  border-top-style: solid;
+  border-left-style: none;
+  border-right-style: none;
+  border-bottom-style: solid;
+  border-color: blanchedalmond;
+  border-collapse: collapse;
+  font-size: 0.7em;
+}
+
+
+table th {
+  border-width: 4px;
+  padding-left: 10px;
+  padding-right: 25px;
+  font-weight: bold;
+  border-top-style: solid;
+  border-left-style: none;
+  border-right-style: none;
+  border-bottom-style: solid;
+  border-color: blanchedalmond;
+}
+
+table td {
+  border-width: 0px;
+  padding-left: 10px;
+  padding-right: 25px;
+  border-style: none;
+  border-color: blanchedalmond;
+}
+</style>
+
+---
+knitr::opts_chunk$set(echo = TRUE)
+---
+
+## Social Vulnerability
+
+<br></br><br></br>
+
+1. Definition of social vulnerability <br></br>
+
+2. Difficult to assign single static value <br></br>
+
+3. 
+
+
+## The Social Vulnerability Index
+
+<center> Center for Disease Control:<br>Agency for Toxic Substances and Disease Registry</center>
+
+1. Census and American Community Survey input variables <br></br>
+
+2. Multiple versions of the index
+
+3. Relative ranks / multi-tiered index <br></br>
+
+4. Index Variable Flags
+
+
+## The Data - Part I
+<br></br><br></br>
+1. 15 Tier 1 Variables
+    + 
+    
+2. Four Thematic Domains
+    +
+    
+3. Overall SVI Rank
+
+
+## The Data - Part II
+
+1. Regional Version of the Index
+   Currently available at State / National Level
+
+## Methods 1 - dealing with data
+
+
+1. Large Data, versatility
+
+2. PostgreSQL / PostGIS
+    + RPostgreSQL, rpostgis
+
+3. Store data on disc, access only parts of file of interest
+
+4. Store regional geometry of interest / user defined area
+
+
+## Methods 2 - Calculating the Index
+
+1. Call data from database (SQL Query)
+
+2. Recalculation - Rank variables
+    + Tier 1
+    + Thematic Domains
+    + Overall SVI
+
+3. Calculate Flags
+
+4. svi_calc function in R
+
+
+## Methods 3 - UI : input  ( or is this really results 1?)
+
+1. User selection / input shapefile
+
+2. Shiny is the solution for UI
+
+3. 
+
+
+
+## Results 1 - Shiney Web Service
+
+
+## Results 2 - Visualization
+
+
+## Results 3 - Output
+
+
+## Further Work 1
+
+1. Adjust SVI calculation to account for missing values
+
+2. Allow different user input file types
+
+3. Expand user download file type options
+
+
+## Further Work 2 - Big Tasks
+
+1. New methodology for interpolating smaller areas than census tracts (MAUP) - do we even suggest this?
+
+2. 
+
+
+## Questions?
+
+
+## Credits
+
+
+
+
+
+
