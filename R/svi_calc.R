@@ -5,27 +5,29 @@
 #' inputs.
 #'
 #' @param con A PostGIS database connection
-#' @param res The result from an ST_Intersects() of PostGIS spatial tables.
+#' @param res1 The result from an ST_Intersects() of PostGIS spatial tables.
 #'
 #' @return A SpatialPolygons Data Frame object resulting from PostgreSQL connection \code{con}
-#' and the resulting object from PostGIS function ST_Intersects() \code{res}
+#' and the resulting object from PostGIS function ST_Intersects() \code{res1}
 #'
 #' @example
-#' svi_calc(con, res)
+#' svi_calc(con, res1)
 #'
 #' @export
 
-svi_calc <- function(con, res) {
+svi_calc <- function(con, res1) {
 
   # Assign vector of column names
-  clmNames <- names(res)
+  clmNames <- names(res1)
   clmNames <- clmNames[!clmNames == 'wkb_geometry']
-  res <- res[clmNames]
+  res1 <- res1[clmNames]
+
+
 
   # delete any row with 0 value in totpop row
 
-  nPop_res <- res[(res$e_totpop=="0"),]
-  res <- res[!(res$e_totpop=="0"),]
+  nPop_res <- res1[(res1$e_totpop=="0"),]
+  res1 <- res1[!(res1$e_totpop=="0"),]
 
   # Note on column prefix meanings:
   #   'e_'    - indicates raw number estimate
@@ -50,11 +52,11 @@ svi_calc <- function(con, res) {
 
   # Calculate rank value of 15 tier 1 variables (except pci) ("ep_" columns), assign values to "epl" columns
   for(i in 1:length(ep_nms)){
-    res[[paste(epl_nms[i])]] <- (rank(res[[paste(ep_nms[i])]], ties.method = "max")-1)/(length(res$gid)-1)
+    res1[[paste(epl_nms[i])]] <- (rank(res1[[paste(ep_nms[i])]], ties.method = "max")-1)/(length(res1$gid)-1)
   }
 
   # Calculate rank value of 'pci'
-  res$epl_pci <- (rank(res$ep_pci * -1, ties.method = "max")-1)/(length(res$ep_pov)-1)
+  res1$epl_pci <- (rank(res1$ep_pci * -1, ties.method = "max")-1)/(length(res1$ep_pov)-1)
 
   # Add 'pci' variable back into the list of variables
   ep_nms  <- c(ep_nms,'ep_pci')
@@ -62,8 +64,8 @@ svi_calc <- function(con, res) {
 
   # Flag values for 15 variables
   for(i in 1:length(f_nms)){
-    slot(res, "data")[f_nms[i]][slot(res, "data")[epl_nms[i]] >= .9] <- 1
-    slot(res, "data")[f_nms[i]][slot(res, "data")[epl_nms[i]] < .9]  <- 0
+    slot(res1, "data")[f_nms[i]][slot(res1, "data")[epl_nms[i]] >= .9] <- 1
+    slot(res1, "data")[f_nms[i]][slot(res1, "data")[epl_nms[i]] < .9]  <- 0
   }
 
   # identify variable names that contribute to each of the 4 thematic domains
@@ -80,33 +82,38 @@ svi_calc <- function(con, res) {
 
   # Sum 15 variable percentile ranks for each theme to `theme#_epl` column
   for(i in 1:4){
-    res[[paste(spl_nms[i])]] <- apply(slot(res, "data")[epl_nms_split[[i]]], 1, sum)
+    res1[[paste(spl_nms[i])]] <- apply(slot(res1, "data")[epl_nms_split[[i]]], 1, sum)
   }
 
   # Calculate rank value of 4 tier 2 thematid domains ("spl_" columns), assign values to "rpl_" columns
   for(i in 1:length(spl_nms)){
-    res[[paste(rpl_nms[i])]] <- (rank(res[[paste(spl_nms[i])]], ties.method = "max")-1)/(length(res$gid)-1)
+    res1[[paste(rpl_nms[i])]] <- (rank(res1[[paste(spl_nms[i])]], ties.method = "max")-1)/(length(res1$gid)-1)
   }
 
   f_theme_nms <- gsub("spl_", "f_", spl_nms)
 
   # Flag values for 4 thematic domains
   for(i in 1:length(f_theme_nms)){
-    slot(res, "data")[f_theme_nms[i]][slot(res, "data")[rpl_nms[i]] >= .9] <- 1
-    slot(res, "data")[f_theme_nms[i]][slot(res, "data")[rpl_nms[i]] < .9]  <- 0
+    slot(res1, "data")[f_theme_nms[i]][slot(res1, "data")[rpl_nms[i]] >= .9] <- 1
+    slot(res1, "data")[f_theme_nms[i]][slot(res1, "data")[rpl_nms[i]] < .9]  <- 0
   }
 
   # Sum 4 thematic domains for overall SVI values to `spl_themes` column
-  res$spl_themes <- apply(slot(res, "data")[c("spl_theme1", "spl_theme2","spl_theme3", "spl_theme4")], 1, sum)
+  res1$spl_themes <- apply(slot(res1, "data")[c("spl_theme1", "spl_theme2","spl_theme3", "spl_theme4")], 1, sum)
 
   # Calculate rank value of overall SVI (`spl_themes`), assign values to `rpl_themes`
-  res$rpl_themes <- (rank(res$spl_themes, ties.method = "max")-1)/(length(res$gid)-1)
+  res1$rpl_themes <- (rank(res1$spl_themes, ties.method = "max")-1)/(length(res1$gid)-1)
 
   # Sum Flags to calculate total number of flags at each census tract
-  res$f_total <- apply(slot(res, "data")[c(f_theme_nms, f_nms)], 1, sum)
-  all_flags <- c(f_theme_nms, f_nms)
-  res$f_total <- apply(slot(res, "data")[all_flags], 1, sum)
+  res1$f_total <- apply(slot(res1, "data")[c(f_theme_nms, f_nms)], 1, sum)
+
+  # res1$f_total
+  # slot(res1, "data")[c(f_theme_nms, f_nms)]
+  #
+  #
+  # f_nms
+  # f_theme_nms
 
   # Add the non-populated census tracts back into the main spatialpolygonsdataframe
-  res <- rbind(res, nPop_res)
+  res1 <- rbind(res1, nPop_res)
 }
