@@ -16,7 +16,7 @@ navbarPage(theme = shinytheme("slate"),
       sidebarPanel(
         fileInput(inputId="shp", label="Upload Shapefile", multiple=TRUE), # must upload all 6 shapefile extensions (.dbf, .prj, .sbn, .sbx, .shp, .shx)
         radioButtons(inputId = "fileType", label = "Select file type for download", choices = list(".shp", ".csv")),
-        downloadButton(outputId = "down", label = "Download file")
+        downloadButton(outputId = "down", label = "Download File")
         ),
 
       # plot shapefile on leaflet map

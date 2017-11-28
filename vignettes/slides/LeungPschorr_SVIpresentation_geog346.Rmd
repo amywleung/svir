@@ -155,6 +155,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Results 3 - Output
 
+1. Download data as `shapefile` or `csv`
+
+
 
 ## Further Work 1
 
@@ -164,12 +167,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 3. Expand user download file type options
 
+4. Allow option for census tract intersection by bounding box
 
-## Further Work 2 - Big Tasks
 
-1. New methodology for interpolating smaller areas than census tracts (MAUP) - do we even suggest this?
+## Further Work 2 - Potential Big Tasks
 
-2. 
+1. Incorporate margin of error / SVI ranking confidence intervals
+
+2. New methodology for interpolating smaller areas than census tracts (MAUP) - do we even suggest this?
 
 
 ## Questions?

@@ -9,6 +9,7 @@ library(viridis)
 library(stringr)
 library(dplyr)
 
+
 # Define server logic
 function(input, output) {
   # create a PostgreSQL instance and create one connection
@@ -143,46 +144,46 @@ function(input, output) {
       )
     }
   })
+
+
+
+  datasetInput <- reactive({
+    switch(
+      input$fileType,
+      ".shp" = svi,
+      ".csv" = svi@data
+    )
+  })
+
+  observeEvent(input$shp, {
+    if(!is.null(input$shp)) {
+      output$down = downloadHandler(
+        filename = function(){
+          if(input$fileType == ".shp"){
+            paste("regional_svi_dl.zip")
+          }
+          else{
+            paste("regional_svi_dl.csv")
+          }
+        },
+        content = function(file){
+          direct <- getwd()
+          if(input$fileType == ".shp"){
+           writeOGR(svi, dsn = direct, layer = "2014svi_us", driver = "ESRI Shapefile", overwrite_layer = TRUE)
+           zip(zipfile = file, files = Sys.glob(paste(direct,"/2014svi_us.*",sep='')))
+           fileDL <- paste(direct,"regional_svi_dl.zip",sep='')
+          }
+
+          else{
+            write.csv(svi@data, file, sep = ",", row.names = FALSE)
+          }
+        },
+        contentType = "application/zip"
+      )
+    }
+  }
+ )
 }
-
-
-#   datasetInput <- reactive({
-#     switch(
-#       input$fileType,
-#       ".shp" = svi,
-#       ".csv" = svi@data
-#     )
-#   })
-#
-#   if (!is.null(input$shp)) {
-#     output$down <- downloadHandler(
-#       filename = function(){
-#         if(input$fileType == ".shp"){
-#           paste("regional_svi_dl.zip")
-#         }
-#         else{
-#           paste("regional_svi_dl.csv")
-#         }
-#       }
-#
-#       content = function(file){
-#         tmpdir <- tempdir()
-#         setwd(tempdir())
-#         file <- tempdir
-#          if(input$fileType == ".shp"){
-#
-#          writeOGR(svi, dsn = file, layer = "2014svi_us", driver = "ESRI Shapefile")
-#            write.table(svi@data, "tempdir", sep = ',', row.names = FALSE)
-#            zip(zipfile=file,  Sys.glob("tempdir/regionalsvi.*"))
-#            zip('regional_svi_dl.zip', files = c(writeOGR(svi, dsn = "tempdir", layer = '2014_svi_us', driver = "ESRI Shapefile")))
-#         }
-#         else{
-#           write.csv(datasetInput, file = file, row.names = FALSE)
-#         }
-#       }
-#     )
-#   }
-# }
 #
 
 #  output$downloadData <- downloadHandler(
