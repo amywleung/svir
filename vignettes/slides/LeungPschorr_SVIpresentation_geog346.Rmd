@@ -1,21 +1,46 @@
 ---
 title: "Regional Social Vulnerability Index"
 author: "Amy Leung, Maximilian Pschorr"
-date: "November 27, 2017"
+date: "November 29, 2017"
 output: 
   slidy_presentation: 
     default:
     fig_height: 4
-    fig_width: 6
-subtitle: <font size="6"> A Web Service for Calculating and Visualizing Regional SVI </font>
+    fig_width: 1
+subtitle: <font size="6.5"> A Web Service for Calculating and Visualizing Regional SVI </font>
+vignette: >
+  %\VignetteIndexEntry{overview}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
+---
+knitr::opts_chunk$set(echo = TRUE)
+---
+## Social Vulnerability
+
+<br></br><br></br>
+
+1. "Social vulnerability refers to the resilience of communities when confrunted by external stresses..."[(ATSDR 2013)](https://svi.cdc.gov/)
+    + In particular, the degree of resilience (or lack thereof) stemming from socio-economic factors
+    + Not geophysical qualities
+    
+2. Difficult to quantifying
+    + A multitude of contributing factors
+    + Difficult to measure
+    + Reaction between socio-economic qualities
+
+3. The Social Vulnerability Index
+    + An multi-level approach to quantifying social vulnerability 
+
 <style type="text/css">
+
 div.slide.titlepage {
   text-align: center;
   background: black;
 }
 
 div.slide.titlepage h1 {
+  text-align: center;
   padding-top: 10%;
   margin-right: 0;
 }
@@ -30,6 +55,17 @@ body
   background-color: black;
   font-family: "Trebuchet MS", Helvetica, sans-serif;
   font-size: 14pt;
+  ;
+}
+
+a:link {
+    color: darkorange;
+}
+a:visited {
+    color: coral;
+}
+a:hover {
+    color: hotpink;
 }
 
 table {
@@ -66,33 +102,20 @@ table td {
 }
 </style>
 
----
-knitr::opts_chunk$set(echo = TRUE)
----
-
-## Social Vulnerability
-
-<br></br><br></br>
-
-1. Definition of social vulnerability <br></br>
-
-2. Difficult to assign single static value <br></br>
-
-3. 
-
-
 ## The Social Vulnerability Index
 
-<center> Center for Disease Control:<br>Agency for Toxic Substances and Disease Registry</center>
+<center> Center for Disease Control:<br>Agency for Toxic Substances and Disease Registry</br></center>
 
 1. Census and American Community Survey input variables <br></br>
-
-2. Multiple versions of the index
+    + Identify potentially less resilient communities, in order to help inform disaster preparation, mitigation, and reconstruction policies and undertakings [(ATSDR)](https://svi.cdc.gov/Documents/FactSheet/SVIFactSheet.pdf)
+    
+2.  Multiple versions of the index
+    + 2000, 2010, and 2014 indexes
+    + This project utilized 2014 ACS variables
 
 3. Relative ranks / multi-tiered index <br></br>
-
-4. Index Variable Flags
-
+    + Variables normalized by population
+    + A census tract's SVI value is relative, rather than a direct measure
 
 ## The Data - Part I
 <br></br><br></br>
@@ -105,10 +128,37 @@ knitr::opts_chunk$set(echo = TRUE)
 3. Overall SVI Rank
 
 
+4. Index Variable Flags
+    + 
+
 ## The Data - Part II
 
 1. Regional Version of the Index
    Currently available at State / National Level
+
+## Methods 1 - dealing with data
+
+
+1. Large Data, versatility
+
+2. PostgreSQL / PostGIS
+    + RPostgreSQL, rpostgis
+
+3. Store data on disc, access only parts of file of interest
+
+4. Store regional geometry of interest / user defined area
+
+
+##
+
+<center>
+72,842 Census Tracts, 126 Columns of Information, <br></br> 1 Column of Vector Geometry
+<br></br>
+
+```{r, out.width = "1080px", echo=FALSE}
+knitr::include_graphics("D:/Fall_2017/svir/vignettes/usCT_noAkHi.png")
+```
+</center>
 
 ## Methods 1 - dealing with data
 
@@ -177,3 +227,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Credits
 
+ATSDR 2013
+https://svi.cdc.gov/
+
+
+https://svi.cdc.gov/Documents/FactSheet/SVIFactSheet.pdf
