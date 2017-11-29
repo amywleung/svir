@@ -1,6 +1,7 @@
 library(shiny)
 library(leaflet)
 library(shinythemes)
+library(DT)
 
 # Set limit for file upload
 options(shiny.maxRequestSize = 50 * 1024 ^ 2)

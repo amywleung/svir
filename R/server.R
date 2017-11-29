@@ -8,6 +8,7 @@ library(rgeos)
 library(viridis)
 library(stringr)
 library(dplyr)
+library(DT)
 
 function(input, output) {
   # create a PostgreSQL instance and create one connection
@@ -112,6 +113,7 @@ function(input, output) {
       }
     })
   })
+
     # end observeevent
     datasetInput <- reactive({
       switch(
@@ -121,43 +123,43 @@ function(input, output) {
       )
     })
 
-    observeEvent(input$shp, {
-      if(!is.null(input$shp)) {
-        output$down = downloadHandler(
-          filename = function(){
-            if(input$fileType == ".shp"){
-              paste("regional_svi_dl.zip")
-            }
-            else{
-              paste("regional_svi_dl.csv")
-            }
-          },
-          content = function(file){
-            direct <- tempdir()
-            setwd(direct)
-            if(input$fileType == ".shp"){
-              writeOGR(uploadShpfile(),
-                       dsn = direct,
-                       layer = "2014svi_us",
-                       driver = "ESRI Shapefile",
-                       overwrite_layer = TRUE)
-              zip(zipfile = file,
-                  files = Sys.glob(paste("2014svi_us.*")))
-            }
+  observeEvent(input$shp, {
+    if(!is.null(input$shp)) {
+      output$down = downloadHandler(
+        filename = function(){
+          if(input$fileType == ".shp"){
+            paste("regional_svi_dl.zip")
+          }
+          else{
+            paste("regional_svi_dl.csv")
+          }
+        },
+        content = function(file){
+          direct <- tempdir()
+          setwd(direct)
+          if(input$fileType == ".shp"){
+            writeOGR(uploadShpfile(),
+                     dsn = direct,
+                     layer = "2014svi_us",
+                     driver = "ESRI Shapefile",
+                     overwrite_layer = TRUE)
+            zip(zipfile = file,
+                files = Sys.glob(paste("2014svi_us.*")))
+          }
 
-            else{
-              write.csv(slot(uploadShpfile(), "data"), file, sep = ",", row.names = FALSE)
-            }
-          },
-          contentType = "application/zip"
-        )
-      }
-    })
-
-    observeEvent(input$shp, {
-      output$table = DT::renderDataTable(
-        slot(uploadShpfile(), "data")[, input$show_vars, drop = FALSE],
-        options = list(lengthMenu = c(20, 30, 40, 50, 75, 100), pageLength = 5), filter = 'top')
+          else{
+            write.csv(slot(uploadShpfile(), "data"), file, sep = ",", row.names = FALSE)
+          }
+        },
+        contentType = "application/zip"
+      )
     }
+  })
+
+  observeEvent(input$shp, {
+    output$table = DT::renderDataTable(
+      slot(uploadShpfile(), "data")[, input$show_vars, drop = FALSE],
+      options = list(lengthMenu = c(10, 20, 30, 40, 50, 75, 100), pageLength = 5), filter = 'top')
+  }
   )
 }
