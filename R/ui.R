@@ -30,11 +30,37 @@ navbarPage(theme = shinytheme("slate"),
                           inputId = "shp",
                           label = "Upload Shapefile",
                           multiple = TRUE
-                        )
+                        ),
+                        radioButtons(inputId = "fileType", label = "Select file type for download",
+                                     choices = list(".shp", ".csv")),
+                        downloadButton(outputId = "down", label = "Download File")
+
+
                       ),
                       # plot shapefile on leaflet map
                       mainPanel(leafletOutput("map"))
-                    ))
+                    )),
+           tabPanel(
+             "Tabular SVI",
+             sidebarLayout(
+               sidebarPanel(
+                 checkboxGroupInput("show_vars", "Columns in SVI:",
+                                    selected = c('rpl_theme1', 'rpl_theme2', 'rpl_theme3',
+                                                 'rpl_theme4', 'rpl_themes', "f_pov", "f_unemp",
+                                                 "f_pci", "f_nohsdp", "f_age65", "f_age17",
+                                                 "f_disabl", "f_sngpnt", "f_minrty", "f_limeng",
+                                                 "f_munit", "f_mobile", "f_crowd", "f_noveh", "f_groupq"),
+                                    c('rpl_theme1', 'rpl_theme2', 'rpl_theme3',
+                                      'rpl_theme4', 'rpl_themes', "f_pov", "f_unemp",
+                                      "f_pci", "f_nohsdp", "f_age65", "f_age17",
+                                      "f_disabl", "f_sngpnt", "f_minrty", "f_limeng",
+                                      "f_munit", "f_mobile", "f_crowd", "f_noveh", "f_groupq")
+                 )
+               ),
+               mainPanel(
+                 dataTableOutput("table")
+               )
+             )
              # tabPanel("Data Table")
            #            leafletOutput("map2")),
            #   tabPanel("Household Composition & Disability",
@@ -43,4 +69,5 @@ navbarPage(theme = shinytheme("slate"),
            #            leafletOutput("map4")),
            #   tabPanel("Housing & Transportation",
            #            leafletOutput("map5"))
-           )
+  )
+)
