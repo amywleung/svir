@@ -121,15 +121,6 @@ The Overall SVI rank is calculated in following the same methodology as the Them
 
 ## Methods - Dealing with Data
 
-<br></br>
-
-1. Storing Data
-    + Nationwide dataset is considerable
-    + Providing a service - consider the user
-    + By design, the user will not need the full dataset
-    
-##
-
 <center>
 72,842 Census Tracts, <br></br> 126 Columns of Information, 1 Column of Vector Geometry
 <br></br>
