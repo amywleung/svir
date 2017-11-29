@@ -1,14 +1,12 @@
 ---
-title: "Local Social Vulnerability Index"
+title: "Regional Social Vulnerability Index"
 author: "Amy Leung and Maximilian Pschorr"
 date: "`r Sys.Date()`"
 output: 
   slidy_presentation: 
     default:
-    fig_height: 4
-    fig_width: 1
     css: slides.css
-subtitle: A Shiny Application for Calculating and Visualizing Local SVI
+subtitle: <font = "7">A Shiny Application for Calculating and Visualizing SVI Locally</font>
 vignette: >
   %\VignetteIndexEntry{SVI Presentation}
   %\VignetteEngine{knitr::rmarkdown}
@@ -28,36 +26,57 @@ library(knitr)
 
 <br></br>
 
--"Social vulnerability refers to the **resilience of communities** when confronted by external stresses..." [(ATSDR 2013)](https://svi.cdc.gov/)
-    + In particular, the degree of resilience (or lack thereof) stemming from socio-economic factors
+1. "Social vulnerability refers to the **resilience of communities** when confronted by external stresses..." [(ATSDR 2013)](https://svi.cdc.gov/)
+    + Degree of resilience (or lack thereof) stemming from socioeconomic factors
     + Not geophysical qualities
     
--Difficult to quantifying
-    + A multitude of contributing factors
-    + Difficult to measure
-    + Reaction between socio-economic qualities
+2. Difficult to quantify
+    + Different definitions across various sectors
+    + Multitude of contributing factors
+    + Reaction between socioeconomic qualities
 
-3. The Social Vulnerability Index
-    + An multi-level approach to quantifying social vulnerability
-    + A complex index to measure complex phenomena
+3. Social Vulnerability Index (SVI)
+    + Jointly developed by Centers for Disease Control and Prevention (CDC) and the Agency for Toxic Substances and Disease Registry (ATSDR)
+    + Multi-level approach to quantifying social vulnerability
+    + Complex index to measure complex phenomena
 
-## The Social Vulnerability Index - Concept
+## The Social Vulnerability Index - Background
 
-<center> Center for Disease Control<br>-</br><b> Agency for Toxic Substances and Disease Registry</br></center><br></br>
+<br></br>
 
-1. Census and American Community Survey input variables <br></br>
-    + Identify potentially less resilient communities, in order to help inform disaster preparation, mitigation, and reconstruction policies and undertakings [(ATSDR)](https://svi.cdc.gov/Documents/FactSheet/SVIFactSheet.pdf)
+1. Built upon [(Cutter et al. 2003)](http://www.geo.mtu.edu/volcanoes/06upgrade/Social-KateG/Attachments%20Used/VulnerabilityEnvironmentalHaz.pdf) work examining "vulnerability as a social condition..."
+
+2. Uses American Community Survey (ACS) 2010-2014 5-Year Estimates 
+    + Identify potentially less resilient communities in order to help inform disaster preparation, mitigation, and reconstruction policies and undertakings [(ATSDR)](https://svi.cdc.gov/Documents/FactSheet/SVIFactSheet.pdf)
     
-2.  Multiple versions of the index
-    + 2000, 2010, and 2014 indexes
-    + This project is a modification of the 2014 implementation
-    + 2014 ACS variables at the census tract level
+3. Currently the authoritative source on SVI within the US
+    
+4. Multiple versions of the index
+    + 2000, 2010, and 2014
+    + This project modifies the 2014 implementation 
+    + Examines 2014 ACS variables at the census tract level
 
-3. Relative ranks / multi-tiered index <br></br>
+5. Relative ranks/multi-tiered index
     + Variables normalized by population
-    + A census tract's SVI value is relative, rather than a direct measure
-    + 40 indicators are generated for every census tract
+    + Census tract's SVI value is relative, rather than a direct measure
+    + 40 indicators are calculated for every census tract
 
+## The Social Vulnerability Index - Motivation
+
+<br></br>
+
+1. SVI used by emergency/disaster management professionals 
+
+2. Informs each stage of the Disaster Management Cycle
+
+3. State and nationwide scales may obscure local variations in social vulnerability
+
+4. Unnecessary (and inaccurate) to look at state/nationwide SVI rankings for an event affecting a specific region
+    + E.g. if an event impacts CA, SVI from VT should not affect CA SVI rankings 
+
+5. We aim to create a Shiny web application to calculate SVI on the fly using a user-defined AOI
+    + This tackles the current relativity problem of SVI
+  
 ## The Social Vulnerability Index - Data
 
 1. <u><b>15 Aggregate ACS Variables</b></u> (Tier 1)
@@ -99,21 +118,21 @@ The Overall SVI rank is calculated in following the same methodology as the Them
 <br></br>
 
 4. Index Variable Flags
-    + Higher tiers of the index provide a more genearlized conception of vulnerability by combining variables. This generalization has the unfortunate effect of masking extreme vulnerability in particular variables.
-    + Census tracts that rank in the 90th percentile are assigned flags for each element in all three tiers.
+      + Higher tiers of the index provide a more genearlized conception of vulnerability by combining variables. This generalization has the unfortunate effect of masking extreme vulnerability in particular variables.
+      + Census tracts that rank in the 90th percentile are assigned flags for each element in all three tiers.
 
 
 ## The Data - Part II
 
 1. Regional Version of the Index
-   Currently available at State / National Level
+   Currently available at State/National Level
 
 ## Methods - Dealing with Data
 
 <br></br>
 
 1. Storing Data
-    + USA wide dataset is considerable
+    + Nationwide dataset is considerable
     + Providing a service - consider the user
     + By design, the user will not need the full dataset
     
@@ -135,7 +154,7 @@ knitr::include_graphics("../figs/usCT_noAkHi.png")
 <br></br>
 
 1. Storing Data
-    + USA wide dataset is considerable
+    + Nationwide dataset is considerable
     + Providing a service - consider the user
     + By design, the user will not need the full dataset
 
@@ -161,7 +180,7 @@ pgAdmin4 - Graphic User Interface for managing PostgreSQL Databases
 <br></br>
 
 1. Storing Data
-    + USA wide dataset is considerable
+    + Nationwide dataset is considerable
     + Providing a service - consider the user
     + By design, the user will not need the full dataset
 
@@ -169,55 +188,73 @@ pgAdmin4 - Graphic User Interface for managing PostgreSQL Databases
     + Alternative repository to storing the data in static file
 
 3. PostGIS extension of PostgreSQL
-    + User defined Area of interest (AOI) geometry
-    + Intersection of user AOI and USA wide dataset
+    + User defined Area of Interest (AOI) geometry
+    + Intersection of user AOI and nationwide dataset
     + Return only relevant census tracts and associated data
-
+    
 
 ## Methods - Calculating the Index
 
 <br></br>
 
-1. Call data from database (SQL Query)
-    + <font color=red>`rpostgres`</font> and SQL query statement
-    + Select everything from USA Dataset that is intersected by user input AOI
-    + Load data into memory as <font color=red>`SpatialPolygonsDataFrame`</font>
-
+1. <font color=red>`svi_calc`</font> Function
+    + Rank variable
+    + Calculate Percentile Rank
+    + Assign value to flag columns for census tracts falling into 90th percentile
+    
 2. Recalculation - Rank variables, Identify flags
     + Tier 1
     + Thematic Domains
     + Overall SVI
 
-3. <font color=red>`svi_calc`</font> Function
-    + Rank variable
-    + Calculate Percentile Rank
-    + Assign value to flag columns for census tracts falling into 90th percentile
 
-## Methods - UI : input  ( or is this really results 1?)
+## Methods - Shiny Server/UI Architecture 
 
 <br></br>
 
-1. User selection / input shapefile
+1. User Interface (UI)
+    + Fluid page (auto-sizes to device browser) with interactive map and data table tab
+    + Upload shapefile for SVI AOI recalculation
+    + Render <font color=red>`leaflet`</font> map with SVI polygons, legend, and inset map
+    + Highlight polygons and see relevant information
+    + Select input to toggle between thematic domain maps
+    + Download button
+    + Display data table with filtering and sorting capabilities
 
-2. Shiny is the solution for UI
-
-3. 
-
-
-
-## Results 1 - Shiney Web Service
+2. Server Logic
+    + Connect to postgreSQL database
+    + File upload event triggers creation of new tables in postgreSQL
+        + User input file and US SVI geometries intersected in postGIS to recalculate SVI
+        + Load data into memory as <font color=red>`SpatialPolygonsDataFrame`</font>
+    + Add SVI polygons to the <font color=red>`leaflet`</font> map 
+    + Apply <font color=red>`mapStyle`</font> Function and zoom to extent
+    + Selecting thematic domain maps trigger corresponding map layers to appear
+    + Ticking check boxes triggers sorting and filtering by data columns
+    
+    
+## Methods - Packages
 
 <br></br>
 
+    library(shiny)
+    library(rgdal)
+    library(rpostgis)
+    library(RPostgreSQL)
+    library(sp)
+    library(leaflet)
+    library(rgeos)
+    library(viridis)
+    library(dplyr)
+    library(stringr)
+    library(dt)
+    library(shinythemes)
+    
 
-## Results 2 - Visualization
+## Results - Shiny Web Application
 
 <br></br>
 
-
-## Results 3 - Output
-
-<br></br>
+LET'S DEMO THE APPLICATION!
 
 
 ## Further Work 1
@@ -226,18 +263,31 @@ pgAdmin4 - Graphic User Interface for managing PostgreSQL Databases
 
 1. Adjust SVI calculation to account for missing values
 
-2. Allow different user input file types
+2. Allow different user input file types (e.g. geoJSON, .sqlite, .csv, etc.)
 
 3. Expand user download file type options
+
+4. Allow option for census tract intersection by minimum bounding box
 
 
 ## Further Work 2 - Big Tasks
 
 <br></br>
 
-1. New methodology for interpolating smaller areas than census tracts (MAUP) - do we even suggest this?
+1. Add interactive dashboard
 
-2. 
+2. Enhance data table filtering options
+
+
+## Takeaways
+
+<br></br>
+
+1. Shiny is **awesome** (and R is extremely versatile)
+
+2. Spatial indexing **significantly** improves geoprocessing time in postGIS
+
+3. <font color=red>`lapply`</font> does not always function as you intended
 
 
 ## 
@@ -250,8 +300,9 @@ Questions?
 
 ## Credits
 
-ATSDR 2013
-https://svi.cdc.gov/
+<b>ATSDR 2013</b>
 
+<br></br>
+https://svi.cdc.gov/
 
 https://svi.cdc.gov/Documents/FactSheet/SVIFactSheet.pdf
