@@ -1,0 +1,73 @@
+dummydeclaration { padding-left: 4em; }
+tab1 { padding-left: 4em; }
+tab2 { padding-left: 8em; }
+tab3 { padding-left: 12em; }
+tab4 { padding-left: 16em; }
+tab5 { padding-left: 20em; }
+
+div.slide.titlepage {
+  text-align: center;
+  background: black;
+}
+
+div.slide.titlepage h1 {
+  text-align: center;
+  padding-top: 10%;
+  margin-right: 0;
+}
+
+body
+{
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  width: 100%;
+  height: 100%;
+  color: blanchedalmond;
+  background-color: black;
+  font-family: "Trebuchet MS", Helvetica;
+  font-size: 14pt;
+  ;
+}
+
+a:link {
+  color: darkorange;
+}
+a:visited {
+  color: coral;
+}
+a:hover {
+  color: hotpink;
+}
+
+table {
+  border-width: 1px;
+  border-spacing: 2px;
+  border-top-style: solid;
+  border-left-style: none;
+  border-right-style: none;
+  border-bottom-style: solid;
+  border-color: blanchedalmond;
+  border-collapse: collapse;
+  font-size: 0.7em;
+}
+
+
+table th {
+  border-width: 4px;
+  padding-left: 10px;
+  padding-right: 25px;
+  font-weight: bold;
+  border-top-style: solid;
+  border-left-style: none;
+  border-right-style: none;
+  border-bottom-style: solid;
+  border-color: blanchedalmond;
+}
+
+table td {
+  border-width: 0px;
+  padding-left: 10px;
+  padding-right: 25px;
+  border-style: none;
+  border-color: blanchedalmond;
+}
