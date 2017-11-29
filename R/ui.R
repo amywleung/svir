@@ -11,7 +11,7 @@ navbarPage(theme = shinytheme("slate"),
            tabPanel("SVI Maps",
                     sidebarLayout(
                       sidebarPanel(
-                        # create select input
+                        # create select input to view different thematic domain maps
                         selectInput(
                           "select",
                           label = h3("Select SVI Domain"),
