@@ -236,18 +236,18 @@ pgAdmin4 - Graphic User Interface for managing PostgreSQL Databases
 
 <br></br>
 
-    library(shiny)
-    library(rgdal)
-    library(rpostgis)
-    library(RPostgreSQL)
+    library(shiny) - used to build the server/ui of our app
+    library(rgdal) - read and write user input files
+    library(rpostgis) - get geometries from postGIS
+    library(RPostgreSQL) - make database connection 
     library(sp)
-    library(leaflet)
+    library(leaflet) - render and style maps
     library(rgeos)
     library(viridis)
     library(dplyr)
     library(stringr)
-    library(dt)
-    library(shinythemes)
+    library(DT)
+    library(shinythemes) - used for the shiny app theme
     
 
 ## Results - Shiny Web Application
