@@ -86,8 +86,7 @@ function(input, output) {
 
   # observe when user uploads file
   observeEvent(input$shp, if (!is.null(uploadShpfile())) {
-    dat <-
-      slot(uploadShpfile(), "data")  # create data and bbox slot objects
+    dat <-slot(uploadShpfile(), "data")  # create data and bbox slot objects
     bb <- slot(uploadShpfile(), "bbox")
     observe({
       if (input$select == 1) {
@@ -99,20 +98,63 @@ function(input, output) {
           flag = "f_total",
           bbox = bb
         )
-      } else {
-        lapply(1:4, function(n) {
-          mapStyle(
-            map = "map",
-            data = dat,
-            shp = uploadShpfile(),
-            rpl = paste0("rpl_theme", n),
-            flag = paste0("f_theme", n),
-            bbox = bb
-          )
-        })
+      }
+      else if(input$select == 2){
+        mapStyle(
+          map = "map",
+          data = dat,
+          shp = uploadShpfile(),
+          rpl = "rpl_theme1",
+          flag = "f_theme1",
+          bbox = bb
+        )
+      }
+      else if(input$select == 3){
+        mapStyle(
+          map = "map",
+          data = dat,
+          shp = uploadShpfile(),
+          rpl = "rpl_theme2",
+          flag = "f_theme2",
+          bbox = bb
+        )
+      }
+      else if(input$select == 4){
+        mapStyle(
+          map = "map",
+          data = dat,
+          shp = uploadShpfile(),
+          rpl = "rpl_theme3",
+          flag = "f_theme3",
+          bbox = bb
+        )
+      }
+      else if(input$select == 5){
+        mapStyle(
+          map = "map",
+          data = dat,
+          shp = uploadShpfile(),
+          rpl = "rpl_theme4",
+          flag = "f_theme4",
+          bbox = bb
+        )
       }
     })
-  })
+
+      # else {
+      #   lapply(1:4, function(n) {
+      #     mapStyle(
+      #       map = "map",
+      #       data = dat,
+      #       shp = uploadShpfile(),
+      #       rpl = paste0("rpl_theme", n),
+      #       flag = paste0("f_theme", n),
+      #       bbox = bb
+      #     )
+      #   })
+      # # }
+    })
+
 
     # end observeevent
     datasetInput <- reactive({
