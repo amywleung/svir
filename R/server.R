@@ -8,7 +8,7 @@ library(rgeos)
 library(viridis)
 library(stringr)
 library(dplyr)
-
+library(DT)
 
 # Define server logic
 function(input, output) {
@@ -145,13 +145,11 @@ function(input, output) {
     }
   })
 
-
-
   datasetInput <- reactive({
     switch(
       input$fileType,
-      ".shp" = svi,
-      ".csv" = svi@data
+      ".shp" = uploadShpfile(),
+      ".csv" = slot(uploadShpfile(), "data")
     )
   })
 
@@ -167,45 +165,29 @@ function(input, output) {
           }
         },
         content = function(file){
-          direct <- getwd()
+          direct <- tempdir()
+          setwd(direct)
           if(input$fileType == ".shp"){
-           writeOGR(svi, dsn = direct, layer = "2014svi_us", driver = "ESRI Shapefile", overwrite_layer = TRUE)
-           zip(zipfile = file, files = Sys.glob(paste(direct,"/2014svi_us.*",sep='')))
-           fileDL <- paste(direct,"regional_svi_dl.zip",sep='')
+           writeOGR(uploadShpfile(), dsn = direct, layer = "2014svi_us", driver = "ESRI Shapefile", overwrite_layer = TRUE)
+           zip(zipfile = file, files = Sys.glob(paste("2014svi_us.*")))
           }
 
           else{
-            write.csv(svi@data, file, sep = ",", row.names = FALSE)
+            write.csv(slot(uploadShpfile(), "data"), file, sep = ",", row.names = FALSE)
           }
         },
         contentType = "application/zip"
       )
     }
-  }
- )
-}
-#
+  })
 
-#  output$downloadData <- downloadHandler(
-#    filename = 'pdfs.zip',
-#    content = function(fname) {
-#      tmpdir <- tempdir()
-#      setwd(tempdir())
-#      print(tempdir())
-#
-#      fs <- c("rock.csv", "pressure.csv", "cars.csv")
-#      write.csv(datasetInput()$rock, file = "rock.csv", sep =",")
-#      write.csv(datasetInput()$pressure, file = "pressure.csv", sep =",")
-#      write.csv(datasetInput()$cars, file = "cars.csv", sep =",")
-#       print (fs)
-#
-#      zip(zipfile=fname, files=fs)
-#    },
-#    contentType = "application/zip"
-#  )
-# else{
-#    return()
-#  }
+  observeEvent(input$shp, {
+    output$table = DT::renderDataTable(slot(uploadShpfile(), "data"))
+  }
+  )
+
+}
+
 # disconnect db connection
 # dbDisconnect(con)
 # dbUnloadDriver(drv)

@@ -1,6 +1,7 @@
 library(shiny)
 library(leaflet)
 library(shinythemes)
+library(DT)
 
 # Set limit for file upload
 options(shiny.maxRequestSize = 50*1024^2)
@@ -26,15 +27,13 @@ navbarPage(theme = shinytheme("slate"),
     )
   ),
   tabPanel(
-    "Socioeconomic Status"
-  ),
-  tabPanel(
-    "Household Composition & Disability"
-  ),
-  tabPanel(
-    "Minority Status & Language"
-  ),
-  tabPanel(
-    "Housing & Transportation"
+    "Tabular SVI",
+    sidebarLayout(
+      sidebarPanel(
+        ),
+      mainPanel(
+        dataTableOutput("table")
+        )
+      )
+    )
   )
-)
