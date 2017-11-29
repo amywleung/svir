@@ -8,6 +8,7 @@ library(rgeos)
 library(viridis)
 library(stringr)
 library(dplyr)
+library(DT)
 
 function(input, output) {
   # create a PostgreSQL instance and create one connection
@@ -85,8 +86,7 @@ function(input, output) {
 
   # observe when user uploads file
   observeEvent(input$shp, if (!is.null(uploadShpfile())) {
-    dat <-
-      slot(uploadShpfile(), "data")  # create data and bbox slot objects
+    dat <-slot(uploadShpfile(), "data")  # create data and bbox slot objects
     bb <- slot(uploadShpfile(), "bbox")
     observe({
       if (input$select == 1) {
@@ -98,20 +98,110 @@ function(input, output) {
           flag = "f_total",
           bbox = bb
         )
-      } else {
-        lapply(1:4, function(n) {
-          mapStyle(
-            map = "map",
-            data = dat,
-            shp = uploadShpfile(),
-            rpl = paste0("rpl_theme", n),
-            flag = paste0("f_theme", n),
-            bbox = bb
-          )
-        })
+      }
+      else if(input$select == 2){
+        mapStyle(
+          map = "map",
+          data = dat,
+          shp = uploadShpfile(),
+          rpl = "rpl_theme1",
+          flag = "f_theme1",
+          bbox = bb
+        )
+      }
+      else if(input$select == 3){
+        mapStyle(
+          map = "map",
+          data = dat,
+          shp = uploadShpfile(),
+          rpl = "rpl_theme2",
+          flag = "f_theme2",
+          bbox = bb
+        )
+      }
+      else if(input$select == 4){
+        mapStyle(
+          map = "map",
+          data = dat,
+          shp = uploadShpfile(),
+          rpl = "rpl_theme3",
+          flag = "f_theme3",
+          bbox = bb
+        )
+      }
+      else if(input$select == 5){
+        mapStyle(
+          map = "map",
+          data = dat,
+          shp = uploadShpfile(),
+          rpl = "rpl_theme4",
+          flag = "f_theme4",
+          bbox = bb
+        )
       }
     })
+
+      # else {
+      #   lapply(1:4, function(n) {
+      #     mapStyle(
+      #       map = "map",
+      #       data = dat,
+      #       shp = uploadShpfile(),
+      #       rpl = paste0("rpl_theme", n),
+      #       flag = paste0("f_theme", n),
+      #       bbox = bb
+      #     )
+      #   })
+      # # }
+    })
+
+
     # end observeevent
+    datasetInput <- reactive({
+      switch(
+        input$fileType,
+        ".shp" = uploadShpfile(),
+        ".csv" = slot(uploadShpfile(), "data")
+      )
+    })
+
+  observeEvent(input$shp, {
+    if(!is.null(input$shp)) {
+      output$down = downloadHandler(
+        filename = function(){
+          if(input$fileType == ".shp"){
+            paste("regional_svi_dl.zip")
+          }
+          else{
+            paste("regional_svi_dl.csv")
+          }
+        },
+        content = function(file){
+          direct <- tempdir()
+          setwd(direct)
+          if(input$fileType == ".shp"){
+            writeOGR(uploadShpfile(),
+                     dsn = direct,
+                     layer = "2014svi_us",
+                     driver = "ESRI Shapefile",
+                     overwrite_layer = TRUE)
+            zip(zipfile = file,
+                files = Sys.glob(paste("2014svi_us.*")))
+          }
+
+          else{
+            write.csv(slot(uploadShpfile(), "data"), file, sep = ",", row.names = FALSE)
+          }
+        },
+        contentType = "application/zip"
+      )
+    }
   })
 
+  observeEvent(input$shp, {
+    output$table = DT::renderDataTable(
+      slot(uploadShpfile(), "data")[, input$show_vars, drop = FALSE],
+      options = list(lengthMenu = c(10, 20, 30, 40, 50, 75, 100), pageLength = 5), filter = 'top')
+  }
+  )
 }
