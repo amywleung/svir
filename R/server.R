@@ -182,7 +182,9 @@ function(input, output) {
   })
 
   observeEvent(input$shp, {
-    output$table = DT::renderDataTable(slot(uploadShpfile(), "data"))
+    output$table = DT::renderDataTable(
+      slot(uploadShpfile(), "data")[, input$show_vars, drop = FALSE],
+      options = list(lengthMenu = c(20, 30, 40, 50, 75, 100), pageLength = 5), filter = 'top')
   }
   )
 
