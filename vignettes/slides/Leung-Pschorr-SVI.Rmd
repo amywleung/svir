@@ -47,14 +47,13 @@ library(knitr)
 1. Built upon [(Cutter et al. 2003)](http://www.geo.mtu.edu/volcanoes/06upgrade/Social-KateG/Attachments%20Used/VulnerabilityEnvironmentalHaz.pdf) work examining "vulnerability as a social condition..."
 
 2. Uses American Community Survey (ACS) 2010-2014 5-Year Estimates 
-    + Identify potentially less resilient communities in order to help inform disaster preparation, mitigation, and reconstruction policies and undertakings [(ATSDR)](https://svi.cdc.gov/Documents/FactSheet/SVIFactSheet.pdf)
-    
-3. Currently the authoritative source on SVI within the US
-    
-4. Multiple versions of the index
+   
+3. Multiple versions of the index
     + 2000, 2010, and 2014
     + This project modifies the 2014 implementation 
     + Examines 2014 ACS variables at the census tract level
+
+4. Currently the authoritative source on SVI within the US
 
 5. Relative ranks/multi-tiered index
     + Variables normalized by population
@@ -66,15 +65,14 @@ library(knitr)
 <br></br>
 
 1. SVI used by emergency/disaster management professionals 
+    + Identify potentially less resilient communities in order to help inform disaster preparation, mitigation, and reconstruction policies and undertakings [(ATSDR)](https://svi.cdc.gov/Documents/FactSheet/SVIFactSheet.pdf)
 
-2. Informs each stage of the Disaster Management Cycle
+2. State and nationwide scales may obscure local variations in social vulnerability
 
-3. State and nationwide scales may obscure local variations in social vulnerability
-
-4. Unnecessary (and inaccurate) to look at state/nationwide SVI rankings for an event affecting a specific region
-    + E.g. if an event impacts CA, SVI from VT should not affect CA SVI rankings 
-
-5. We aim to create a Shiny web application to calculate SVI on the fly using a user-defined AOI
+3. Unnecessary (and inaccurate) to look at state/nationwide SVI rankings for an event affecting a specific region
+    + E.g. if an event impacts California, socio-economic resiliance of New England should not affect SVI rankings 
+    
+4. We aim to create a Shiny web application to calculate SVI on the fly using a user-defined AOI
     + This tackles the current relativity problem of SVI
   
 ## The Social Vulnerability Index - Data
@@ -121,22 +119,7 @@ The Overall SVI rank is calculated in following the same methodology as the Them
       + Higher tiers of the index provide a more genearlized conception of vulnerability by combining variables. This generalization has the unfortunate effect of masking extreme vulnerability in particular variables.
       + Census tracts that rank in the 90th percentile are assigned flags for each element in all three tiers.
 
-
-## The Data - Part II
-
-1. Regional Version of the Index
-   Currently available at State/National Level
-
 ## Methods - Dealing with Data
-
-<br></br>
-
-1. Storing Data
-    + Nationwide dataset is considerable
-    + Providing a service - consider the user
-    + By design, the user will not need the full dataset
-    
-##
 
 <center>
 72,842 Census Tracts, <br></br> 126 Columns of Information, 1 Column of Vector Geometry
@@ -263,11 +246,9 @@ LET'S DEMO THE APPLICATION!
 
 1. Adjust SVI calculation to account for missing values
 
-2. Allow different user input file types (e.g. geoJSON, .sqlite, .csv, etc.)
+2. Allow different user input/download file types (e.g. geoJSON, .sqlite, .csv, etc.)
 
-3. Expand user download file type options
-
-4. Allow option for census tract intersection by minimum bounding box
+3. Tweak UI to maximize efficient use of space
 
 
 ## Further Work 2 - Big Tasks
@@ -277,6 +258,8 @@ LET'S DEMO THE APPLICATION!
 1. Add interactive dashboard
 
 2. Enhance data table filtering options
+
+3. Allow users to define AOI by selecting AOI on map 
 
 
 ## Takeaways
