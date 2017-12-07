@@ -9,6 +9,7 @@ library(viridis)
 library(stringr)
 library(dplyr)
 library(DT)
+library(leaflet.extras)
 
 function(input, output) {
   # create a PostgreSQL instance and create one connection
@@ -81,6 +82,7 @@ function(input, output) {
       addProviderTiles(providers$CartoDB.Positron) %>%
       addMiniMap(tiles = providers$CartoDB.Positron,
                  toggleDisplay = T) %>%
+      addFullscreenControl(position = "topleft") %>%
       setView(-98.6106479, 39.8123024, zoom = 4)
   })  # end output$map
 

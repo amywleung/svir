@@ -38,7 +38,7 @@ navbarPage(theme = shinytheme("slate"),
 
                       ),
                       # plot shapefile on leaflet map
-                      mainPanel(leafletOutput("map", height = 875))
+                      mainPanel(leafletOutput("map"))
                     )),
            tabPanel(
              "Tabular SVI",
