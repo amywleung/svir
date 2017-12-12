@@ -1,5 +1,4 @@
 mapStyle <- function(map, data, shp, bbox, rpl, flag) {
-
     nondat <- data[[rpl]][!data[[rpl]] == -999]  # subset out tracts with no SVIs
     pal <- colorNumeric(palette = "viridis",
                         domain = nondat)
@@ -22,6 +21,7 @@ mapStyle <- function(map, data, shp, bbox, rpl, flag) {
       clearControls() %>%  # clear controls with each upload
       addPolygons(
         data = shp,
+        layerId = ~data,
         smoothFactor = 0,
         fillColor = ~ pal(nondat),
         fillOpacity = 0.7,
