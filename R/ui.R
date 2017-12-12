@@ -1,14 +1,15 @@
 library(shiny)
 library(leaflet)
 library(shinythemes)
+library(plotly)
 
 # Set limit for file upload
 options(shiny.maxRequestSize = 50 * 1024 ^ 2)
 
 # Define UI for file upload
 navbarPage(theme = shinytheme("slate"),
-           title = "Center for Disease Control and Prevention: Social Vulnerability Index",
-           tabPanel("SVI Maps",
+           title = "Centers for Disease Control and Prevention: Social Vulnerability Index",
+           tabPanel("Interactive Map",
                     sidebarLayout(
                       sidebarPanel(
                         # create select input to view different thematic domain maps
@@ -38,10 +39,12 @@ navbarPage(theme = shinytheme("slate"),
 
                       ),
                       # plot shapefile on leaflet map
-                      mainPanel(leafletOutput("map"))
+                      mainPanel(leafletOutput("map"),
+                                h3(""),
+                                plotlyOutput("dash"))
                     )),
            tabPanel(
-             "Tabular SVI",
+             "Data Table",
              sidebarLayout(
                sidebarPanel(
                  checkboxGroupInput("show_vars", "Columns in SVI:",
