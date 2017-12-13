@@ -1,4 +1,26 @@
-mapStyle <- function(map, data, shp, bbox, rpl, flag) {
+#' mapStyle
+#'
+#' Creates and styles leaflet maps using the same style definition for
+#' uniform maps.
+#'
+#' @param map A leaflet map object
+#' @param data The data slot from the SVI spatial polygons dataframe
+#' @param shp The user uploaded shapefile
+#' @param bbox
+#' @param rpl
+#' @param flag
+#'
+#' @return A SpatialPolygons Data Frame object resulting from PostgreSQL connection \code{con}
+#' and the resulting object from PostGIS function ST_Intersects() \code{res}
+#'
+#' @example
+#' svi_calc(con, res)
+#'
+#' @export
+
+mapStyle <- function(map, data, rpl, flag) {
+    dat <- slot(data, "data")  # get data slot from spdf
+    bbox <- slot(data, "bbox")
     nondat <- data[[rpl]][!data[[rpl]] == -999]  # subset out tracts with no SVIs
     pal <- colorNumeric(palette = "viridis",
                         domain = nondat)
@@ -20,8 +42,8 @@ mapStyle <- function(map, data, shp, bbox, rpl, flag) {
       clearShapes() %>%  # clear shapes with each upload
       clearControls() %>%  # clear controls with each upload
       addPolygons(
-        data = shp,
-        layerId = ~data,
+        data = data,
+        layerId = ~data$gid,
         smoothFactor = 0,
         fillColor = ~ pal(nondat),
         fillOpacity = 0.7,
