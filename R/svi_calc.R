@@ -5,7 +5,7 @@
 #' inputs.
 #'
 #' @param con A PostGIS database connection
-#' @param res The result from an ST_Intersects() of PostGIS spatial tables.
+#' @param res The result from an ST_Intersects() of PostGIS spatial tables
 #'
 #' @return A SpatialPolygons Data Frame object resulting from PostgreSQL connection \code{con}
 #' and the resulting object from PostGIS function ST_Intersects() \code{res}
