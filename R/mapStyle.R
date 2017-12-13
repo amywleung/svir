@@ -1,20 +1,18 @@
 #' mapStyle
 #'
 #' Creates and styles leaflet maps using the same style definition for
-#' uniform maps.
+#' uniform maps. More information on thematic domains and thematic flags can
+#' be found at the CDC website.
 #'
 #' @param map A leaflet map object
-#' @param data The data slot from the SVI spatial polygons dataframe
-#' @param shp The user uploaded shapefile
-#' @param bbox
-#' @param rpl
-#' @param flag
+#' @param data The SVI shapefile from the CDC website
+#' @param rpl The thematic domain field from the SVI shapefile
+#' @param flag The thematic flag field from the SVI shapefile
 #'
-#' @return A SpatialPolygons Data Frame object resulting from PostgreSQL connection \code{con}
-#' and the resulting object from PostGIS function ST_Intersects() \code{res}
+#' @return A styled leaflet map based on \code{rpl} and \code{flag} values
 #'
 #' @example
-#' svi_calc(con, res)
+#' mapStyle(map = map, data = uploadShpFile(), rpl = "rpl_themes", flag = "f_total")
 #'
 #' @export
 
