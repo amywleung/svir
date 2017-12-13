@@ -9,7 +9,7 @@ svi_calc(con, res)
 \arguments{
 \item{con}{A PostGIS database connection}
 
-\item{res}{The result from an ST_Intersects() of PostGIS spatial tables.}
+\item{res}{The result from an ST_Intersects() of PostGIS spatial tables}
 }
 \value{
 A SpatialPolygons Data Frame object resulting from PostgreSQL connection \code{con}
