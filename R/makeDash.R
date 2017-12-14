@@ -56,11 +56,13 @@ makeDash <- function(shp, uid) {
       y = ~ t1vals,
       type = "bar",
       name = "Socioeconomic Status",
-      hoverinfo = "x"
+      hoverinfo = "y",
+      opacity = 0.7
     ) %>%
     layout(
       yaxis = list(title = "Percentile Percentage"),
-      xaxis = list(tickangle = 45)
+      xaxis = list(tickangle = 45),
+      font = list(color = "white"), margin = list(b = 105)
     )
   p2 <-
     plot_ly(
@@ -69,9 +71,11 @@ makeDash <- function(shp, uid) {
       y = ~ t2vals,
       type = "bar",
       name = "Household Composition & Disability",
-      hoverinfo = "x"
+      hoverinfo = "y",
+      opacity = 0.7
     ) %>%
-    layout(xaxis = list(tickangle = 45))
+    layout(xaxis = list(tickangle = 45),
+           font = list(color = "white"), margin = list(b = 105))
   p3 <-
     plot_ly(
       dat,
@@ -79,9 +83,11 @@ makeDash <- function(shp, uid) {
       y = ~ t3vals,
       type = "bar",
       name = "Minority Status & Language",
-      hoverinfo = "x"
+      hoverinfo = "y",
+      opacity = 0.7
     ) %>%
-    layout(xaxis = list(tickangle = 45))
+    layout(xaxis = list(tickangle = 45),
+           font = list(color = "white"), margin = list(b = 105))
   p4 <-
     plot_ly(
       dat,
@@ -89,8 +95,12 @@ makeDash <- function(shp, uid) {
       y = ~ t4vals,
       type = "bar",
       name = "Housing & Transportation",
-      hoverinfo = "x"
+      hoverinfo = "y",
+      opacity = 0.7
     ) %>%
-    layout(xaxis = list(tickangle = 45))
+    layout(xaxis = list(tickangle = 45),
+           font = list(color = "white"), margin = list(b = 105), plot_bgcolor = "transparent",
+           paper_bgcolor = "transparent")
+
   subp <- subplot(p1, p2, p3, p4, shareY = TRUE)
 }
