@@ -5,7 +5,7 @@ Version: 0.1.0
 Author: Amy Leung & Maximilian Pschorr
 Maintainer: Amy Leung <amywlleung@gmail.com> & Maximilian Pschorr <pschorr.maximilian@gmail.com>
 Description: This package contains scripts that will re-rank census tracts based on SVI percentile ranking. Tracts in the top 10% and 
-    lowest 10% will be flagged.
+    will be flagged.
 License: GNU GENERAL PUBLIC LICENSE, vERSION 3 (GPLv3)
 Encoding: UTF-8
 LazyData: true
@@ -13,3 +13,22 @@ Suggests: knitr,
     rmarkdown
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1.9000
+Imports: dplyr,
+    DT,
+    leaflet,
+    leaflet.extras,
+    plotly,
+    rgdal,
+    rgeos,
+    rpostgis,
+    RPostgreSQL,
+    shiny,
+    shinythemes,
+    sp,
+    stringr,
+    viridis
+    
+    
+    
+    
+    
