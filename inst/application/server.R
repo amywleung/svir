@@ -199,12 +199,12 @@ function(input, output) {
     rv$clickedShape <- input$map_shape_click
     if (!is.null(rv$clickedShape)) {
       id <- rv$clickedShape$id  # get census tract id from click event
+    }
       bg <- makeDash(shp = uploadShpfile(), uid = id)
       bp <- makeBox(shp = uploadShpfile(), uid = id)
       output$dash <- renderPlotly(bg)  # create plotly bar graph
       output$boxplot <- renderPlotly(bp)  # create plotly boxplot
-    }
-  })
+    })
 
   # clear rv list when clicking off the shape
   observeEvent(input$map_click, {
