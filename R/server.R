@@ -221,7 +221,7 @@ function(input, output) {
   })
 
   # clear rv list when clicking off the shape
-  observeEvent(input$map_click,{
+  observeEvent(input$map_click, {
     rv$clickedShape <- NULL
   })
 }
