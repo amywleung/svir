@@ -210,8 +210,14 @@ function(input, output) {
     event <- input$map_shape_click
     if (!is.null(event$id)) {
       id <- event$id  # get census tract id from click event
-      p <- makeDash(shp = uploadShpfile(), uid = id)
-      output$dash <- renderPlotly(p)  # create plotly plot
+      bg <- makeDash(shp = uploadShpfile(), uid = id)
+      bp <- makeBox(shp = uploadShpfile(), uid = id)
+      output$dash <- renderPlotly(bg)  # create plotly bar graph
+      output$boxplot <- renderPlotly(bp)  # create plotly boxplot
     }
   })
+
+  # observeEvent(input$map_click, {
+  #
+  # })
 }
