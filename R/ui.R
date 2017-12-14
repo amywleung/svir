@@ -34,13 +34,14 @@ navbarPage(theme = shinytheme("slate"),
                         ),
                         radioButtons(inputId = "fileType", label = "Select file type for download",
                                      choices = list(".shp", ".csv")),
-                        downloadButton(outputId = "down", label = "Download File")
-
-
+                        downloadButton(outputId = "down", label = "Download File"),
+                        h3(""),
+                        h3(""),
+                        plotlyOutput("boxplot")
                       ),
                       # plot shapefile on leaflet map
                       mainPanel(leafletOutput("map"),
-                                h3(""),
+                                h4(""),
                                 plotlyOutput("dash"))
                     )),
            tabPanel(
@@ -65,12 +66,12 @@ navbarPage(theme = shinytheme("slate"),
                )
              )
              # tabPanel("Data Table")
-           #            leafletOutput("map2")),
-           #   tabPanel("Household Composition & Disability",
-           #            leafletOutput("map3")),
-           #   tabPanel("Minority Status & Language",
-           #            leafletOutput("map4")),
-           #   tabPanel("Housing & Transportation",
-           #            leafletOutput("map5"))
-  )
+             #            leafletOutput("map2")),
+             #   tabPanel("Household Composition & Disability",
+             #            leafletOutput("map3")),
+             #   tabPanel("Minority Status & Language",
+             #            leafletOutput("map4")),
+             #   tabPanel("Housing & Transportation",
+             #            leafletOutput("map5"))
+           )
 )
