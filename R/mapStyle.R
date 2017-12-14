@@ -19,7 +19,7 @@
 mapStyle <- function(map, data, rpl, flag) {
     dat <- slot(data, "data")  # get data slot from spdf
     bbox <- slot(data, "bbox")
-    nondat <- data[[rpl]][!data[[rpl]] == -999]  # subset out tracts with no SVIs
+    nondat <- dat[[rpl]][!dat[[rpl]] == -999]  # subset out tracts with no SVIs
     pal <- colorNumeric(palette = "viridis",
                         domain = nondat)
     # format labels for reactive map labels
@@ -27,11 +27,11 @@ mapStyle <- function(map, data, rpl, flag) {
       sprintf(
         "<strong>%s</strong>%s<br/><strong>%s</strong>%g<br/><strong>%s</strong>%i",
         "Location: ",
-        data$location[!data[[rpl]] == -999],
+        dat$location[!dat[[rpl]] == -999],
         "SVI: ",
         round(nondat, digits = 2),
         "Total Flags: ",
-        data[[flag]][!data[[rpl]] == -999]
+        dat[[flag]][!dat[[rpl]] == -999]
       ) %>%
       lapply(HTML)
 
@@ -41,7 +41,7 @@ mapStyle <- function(map, data, rpl, flag) {
       clearControls() %>%  # clear controls with each upload
       addPolygons(
         data = data,
-        layerId = ~data$gid,
+        layerId = ~dat$gid,
         smoothFactor = 0,
         fillColor = ~ pal(nondat),
         fillOpacity = 0.7,
