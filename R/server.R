@@ -205,11 +205,14 @@ function(input, output) {
     )
   })
 
+  # intialize empty reactive values list
+  rv <- reactiveValues(clickedShape = NULL)
+
   # observe map clicks when a poly is clicked
   observeEvent(input$map_shape_click, {
-    event <- input$map_shape_click
-    if (!is.null(event$id)) {
-      id <- event$id  # get census tract id from click event
+    rv$clickedShape <- input$map_shape_click
+    if (!is.null(rv$clickedShape)) {
+      id <- rv$clickedShape$id  # get census tract id from click event
       bg <- makeDash(shp = uploadShpfile(), uid = id)
       bp <- makeBox(shp = uploadShpfile(), uid = id)
       output$dash <- renderPlotly(bg)  # create plotly bar graph
@@ -217,7 +220,8 @@ function(input, output) {
     }
   })
 
-  # observeEvent(input$map_click, {
-  #
-  # })
+  # clear rv list when clicking off the shape
+  observeEvent(input$map_click,{
+    rv$clickedShape <- NULL
+  })
 }
