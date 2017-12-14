@@ -65,13 +65,5 @@ navbarPage(theme = shinytheme("slate"),
                  dataTableOutput("table")
                )
              )
-             # tabPanel("Data Table")
-             #            leafletOutput("map2")),
-             #   tabPanel("Household Composition & Disability",
-             #            leafletOutput("map3")),
-             #   tabPanel("Minority Status & Language",
-             #            leafletOutput("map4")),
-             #   tabPanel("Housing & Transportation",
-             #            leafletOutput("map5"))
            )
 )
