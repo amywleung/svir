@@ -23,7 +23,6 @@ Imports: dplyr,
     rpostgis,
     RPostgreSQL,
     shiny,
-    shinythemes,
     sp,
     stringr,
     viridis
