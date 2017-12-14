@@ -131,21 +131,7 @@ function(input, output) {
         )
       }
     })
-
-    # else {
-    #   lapply(1:4, function(n) {
-    #     mapStyle(
-    #       map = "map",
-    #       data = dat,
-    #       shp = uploadShpfile(),
-    #       rpl = paste0("rpl_theme", n),
-    #       flag = paste0("f_theme", n),
-    #       bbox = bb
-    #     )
-    #   })
-    # # }
   })
-
 
   # end observeevent
   datasetInput <- reactive({
