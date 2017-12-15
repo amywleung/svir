@@ -18,6 +18,7 @@ Imports: dplyr,
     leaflet,
     leaflet.extras,
     plotly,
+    prettydoc,
     rgdal,
     rgeos,
     rpostgis,
@@ -27,8 +28,3 @@ Imports: dplyr,
     sp,
     stringr,
     viridis
-    
-    
-    
-    
-    
