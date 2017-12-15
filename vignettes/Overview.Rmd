@@ -47,7 +47,7 @@ pre { /* Code block - determines code spacing between lines */
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.align = 'center', fig.height = 4, 
-                      fig.width = 5, fig.path = "images/")
+                      fig.width = 5, fig.path = "figs/")
 knitr::opts_chunk$set(echo = TRUE)
 library(raster)
 library(sp)
@@ -143,7 +143,7 @@ plot(usCT_noAkHi)
 dev.off()
 ```
 
-![United States Census Tracts](../vignettes/usCT_noAkHi.png) `DOL:M`
+![United States Census Tracts](../vignettes/figs/usCT_noAkHi.png) `DOL:M`
 
 
 ## PostgreSQL/PostGIS
@@ -284,7 +284,7 @@ Section Timeline `DOL:B`
 
 The following is a screenshot of the RShiny GUI as it functioned on 11-20-2017. In this interface, one can see several things: an upload button which allows a user to input a shapefile delimiting an area of interest within which to calculate the SVI, a map area showing census tracts within the user delimited area (this will contain values for overall SVI values), and tabs to view the SVI rankings by thematic domain (yet to be implemented).
 
-![Census Tracts Selected by Hurricane Sandy Impact Shapefile)](../vignettes/RegionalSVI_ShinyGUI_11_20_17.png)`DOL:M`
+![Census Tracts Selected by Hurricane Sandy Impact Shapefile)](../vignettes/figs/RegionalSVI_ShinyGUI_11_20_17.png)`DOL:M`
 
 Section Anticipated Outcomes `DOL:M`
 
