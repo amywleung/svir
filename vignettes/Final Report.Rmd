@@ -16,25 +16,66 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include = FALSE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
 ```
 
+# How to Run the Shiny App
+
+After installing the `svir` package from GitHub, simply run the following code to launch the Shiny web application: 
+
+```{r run, echo=FALSE}
+library(svir)
+launchApp()
+```
+
+How to Run the Shiny App Section `DOL:A`
+
 # Introduction
 
-####################### PLEASE EDIT AS YOU SEE FIT--I JUST JOTTED THOUGHTS DOWN QUICKLY ##################
-As tropical storms and natural disasters occur more frequently and more intensely with climate change, it is imperative for communities to build greater resiliency in response to increasingly volatile natural hazards. Mitigation strategies and community preparedness plans are meant to lessen the loss of life and property, but there is not a one-size-fits-all approach to community capacity building. Vulnerability may not be uniformly or equally distributed across any one particular area, and different communities may have drastically different types of needs. 
+As natural hazards and disasters occur with greater frequency and intensity, it is imperative to build community resilience to preserve life and property. Mitigation strategies and preparedness plans have been established throughout the US as a result, simultaneously minimizing hazard and disaster damages and qualifying municipal and state governments for federal disaster and emergency response dollars. While these mitigation and preparedness plans are intended to minimize risk for *all* lives, they are especially important among socially vulnerable communities. Despite a conceptual awareness of social vulnerability among industry professionals, there are few authoritative sources to consult when attempting to quantify social vulnerability, resulting in different interpretations of vulnerable characteristics from one entity to another. 
 
-In an effort to quantify the myriad of socioeconomic factors contributing to vulnerability, Cutter et al. (2003) [(http://onlinelibrary.wiley.com/doi/10.1111/1540-6237.8402002/abstract)] developed a national Social Vulnerability Index (SoVI) that served as the foundation for the Social Vulnerability Index (SVI) developed by the US Department of Homeland Security (2011), in conjunction with the Centers for Disease Control (CDC) and the Agency for Toxic Substances and Disease Registry (ATSDR). This SVI currently acts as the authoritative national social vulnerability index and is used by emergency and disaster management professionals in pre- and post-disaster activities. 
+The variability across communities with respect to demographics, socioeconomic statuses, and accessibility presents a challenge for emergency and disaster management entities when devising new mitigation and preparedness plans, namely in that a one-size-fits-all approach to community capacity building does not exist. Vulnerability may not be uniformly or equally distributed across any one particular area, and different communities may have drastically different types of needs. Though this variability renders social vulnerability a nebulous measure to quantify, in their seminal 2003 paper, [Cutter et al.](http://onlinelibrary.wiley.com/doi/10.1111/1540-6237.8402002/abstract) developed a US-oriented Social Vulnerability Index (SoVI) in an attempt to create a foundational measure of social vulnerability. The SoVI used 11 independent factors in an additive model to identify social vulnerability to environmental hazards throughout the US [(Cutter et al. 2003)](http://onlinelibrary.wiley.com/doi/10.1111/1540-6237.8402002/abstract). Though this model accounts for an impressive 76% of variance in vulnerability, researchers acknowledged that local effects are present, as the "factors that contribute to the overall score often are different for each county, underscoring the interactive nature of social vulnerability" [(Cutter et al. 2003, p. 242)](http://onlinelibrary.wiley.com/doi/10.1111/1540-6237.8402002/abstract). 
 
-The SVI is comprised of four thematic domains: Socioeconomic Status, Housing Composition and Disability, Minority Status and Language, and Housing and Transportation. Spread across each of these domains are 15 aggregate variables calculated from 2010 – 2014 American Community Survey (ACS) 5-year estimates and flagged based on 90th percentile values (i.e. the top 10% most vulnerable values). 
+[Cutter et al.'s](http://onlinelibrary.wiley.com/doi/10.1111/1540-6237.8402002/abstract) 2003 SoVI laid the foundation for the most recent iteration of the Social Vulnerability Index (SVI), developed jointly by the Centers for Disease Control and Prevention's (CDC) National Center for Environmental Health, Office of Terrorism Preparedness and Emergency
+Response (OTPER), and the Agency for Toxic Substances and Disease Registry's (ATSDR) Geospatial Research, Analysis, and Services Program in 2011 [(Centers for Disease Control and Prevention et al.)](https://svi.cdc.gov/Documents/Data/A%20Social%20Vulnerability%20Index%20for%20Disaster%20Management.pdf). To date, this SVI from the CDC and ATSDR is considered one of the few, if only, authoritative sources within the emergency and disaster management industry in pre- and post-disaster activities. Despite its prominent role as an authoritative source on social vulnerability, the SVI in its current form does not take into account the variability of different communities. Rather, it is a ranked measure that compares relative social vulnerability calculated at the nation and statewide scales [(Centers for Disease Control and Prevention et al. 2011)](https://svi.cdc.gov/Documents/Data/A%20Social%20Vulnerability%20Index%20for%20Disaster%20Management.pdf). In other words, social vulnerability is calculated using a percentile ranking method that ranks **all** US census tracts against one another for the nationwide SVI product (e.g. social vulnerability in rural Kansas is directly compared to social vulnerability in Chicago), or against other census tracts within a state for the statewide product (e.g. social vulnerability in upstate New York is directly compared to social vulnerability in New York City). Analytical scales of either existing data product may still be too coarse to pick up on any potential regional variation in demographic, socioeconomic, and accessibility characteristics. Additionally, the inclusion of all US census tracts in an SVI calculation for a regional disaster would make little sense. For example, if tornadoes affected rural Oklahoma, it would not be appropriate to include SVI rankings for census tracts in Washington state. 
+
+Based on previous findings from [Cutter et al. (2003)](http://onlinelibrary.wiley.com/doi/10.1111/1540-6237.8402002/abstract), it is clear that the 2011 SVI also suffers from the same Modifiable Areal Unit Problem (MAUP) when ranking areal units at a national or statewide scale. That is, SVI scores vary at differing levels of analysis due to the potential variability in community demographics and other socioeconomic and accessibility variables at local, state, and national levels. The primary aim of this project is to address the MAUP using a Shiny web application that dynamically calculates SVI for a user's specified Area of Interest (AOI). The user can upload a shapefile as points, lines, or polygons, and the resulting regional SVI can be downloaded as a .CSV or shapefile. While this process takes into account the [Cutter et al. (2003)](http://onlinelibrary.wiley.com/doi/10.1111/1540-6237.8402002/abstract) consideration of local variability, it introduces the possibility that there may be minimal variation in vulnerability characteristics at a finer scale. To address these particular cases, the web application also hosts an interactive dashboard illustrating each of the 15 thematic indicators for a selected census tract, and markers indicating where each thematic domain of the selected census tract falls in relation to the thematic domains in the nationwide dataset. This visualization is intended to provide users with a relative understanding of where a particular census tract falls in relation to its comparable national measure. The interactive SVI tool completed for this course is meant to be a prototype for a more refined SVI tool that allows users to adjust weighting schemes for each thematic indicator or thematic domain. 
+
+Introduction Section `DOL:A`
 
 # Methods
 
-PostgreSQL/PostGIS - necessary for storing large SVI dataset
-Shiny - develop interactive web application for users to upload/download SVI for their AOIs
-Packages - (subsection) discuss importance of each package used, and the functionality used in each
+## PostgreSQL/PostGIS - necessary for storing large SVI dataset
+
+## Shiny - develop interactive web application for users to upload/download SVI for their AOIs
+
+## Packages - discuss importance of each package used, and the functionality used in each
+
+## Custom Functions
+
+### `svi_calc`
+
+The SVI is calculated in the `svi_calc` function using a multi-tiered approach as outlined in the [(Centers for Disease Control and Prevention et al. 2011)](https://svi.cdc.gov/Documents/Data/A%20Social%20Vulnerability%20Index%20for%20Disaster%20Management.pdf) paper. First, an array of raw variables from the 2010 – 2014 American Community Survey (ACS) 5-year estimates at the census tract level are aggregated into 15 thematic indicators, then transformed into percentile ranks. Next, the percentile ranks of the 15 thematic indicators are combined and transformed into percentile ranks of four thematic domains, as follows: Socioeconomic Status, Housing Composition and Disability, Minority Status and Language, and Housing and Transportation. Finally, overall SVI is calculated by summing the percentile ranks of the four thematic domains, then transforming those values into percentile ranks for the final SVI scores. At the end of this process, each of the 15 thematic indicators and four thematic domains are evaluated and the top 10% most vulnerable census tracts are assigned variable flags. These flags act as a mechanism to highlight the census tracts containing the most vulnerable populations for each of the 15 thematic indicators and four thematic domains, preventing these populations from being obscured during the percentile ranking process [(Centers for Disease Control and Prevention et al. 2011)](https://svi.cdc.gov/Documents/Data/A%20Social%20Vulnerability%20Index%20for%20Disaster%20Management.pdf).
+
+`svi_calc` Section `DOL:A`
+
+### `mapStyle`
+
+The `mapStyle` function creates and styles a Leaflet proxy map using a Leaflet map object, a shapefile, one of five SVI thematic domains, and a flag variable field designating top 10% most vulnerable census tracts. In order to use this function, users must first create a Leaflet map object, which initializes an empty Leaflet map containing a basemap and a default map zoom setting. Users then initialize a Leaflet proxy using the `mapStyle` function, which allows users to add legends, symbology, polygons, and custom zoom settings all at once to their original Leaflet map object without re-rendering a Leaflet map object each time a map element is added.
+
+`mapStyle` Section `DOL:A`
+
+### `makeDash`
+
+### `makeBox`
+
+### `launchApp`
+
+The `launchApp` function launches the Shiny web application by searching the `/application` subfolder in the `svir` package and using the `server.R` and `ui.R` scripts. This function takes no input parameters.
+
+`launchApp` Section `DOL:A`
 
 # Results
 
