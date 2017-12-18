@@ -195,8 +195,7 @@ function(input, output) {
           lengthMenu = c(10, 20, 30, 40, 50, 75, 100),
           pageLength = 10,
           class = 'cell-border stripe'
-        ),
-        filter = 'top'
+        )
         )
       }
     )
