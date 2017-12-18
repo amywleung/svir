@@ -61,7 +61,7 @@ The installer for PostgreSQL can be found on the [downloads page](https://www.po
 At several instances in the setup process, you will be prompted to select default or custom parameters. A user of this packages has two options: input their own choices for these parameters and change the package code appropriately, OR select the input choices specified in the following section. In the latter case, our package will work without modification.
 
 ```{r, echo = FALSE}
-Parameters <- c("user", "password", "host", "port", "database name")
+Parameters <- c("user", "password", "server host", "port", "database name")
 Defaults <- c("postgres", "gisde2018", "localhost", "5432", "svir")
 parTable <- cbind(Parameters, Defaults)
 
@@ -90,13 +90,14 @@ This statement will update your database to include PostGIS functionalities.
 The data needed for this package is currently hosted by the Agency for Toxic Substances and Disease Registry on their [Social Vulnerability Downloads page](https://svi.cdc.gov/SVIDataToolsDownload.html). The file you wish to download is called "SVI 2014 Tract Shapefile (US)". Download the shapefile, and extract it to your chosen storage directory.
 
 
-Installed along with PostGIS is a graphic user interface "PostGIS Shapefile Import/Export Manager" utility for importing `shapefiles` directly into PostGIS. This utility is called "shp2pgsql-gui", and can be found in the PostgreSQL program directory (In a Windows environment, this should look similar to the following:`C:\Program Files\PostgreSQL\10\bin\postgisgui`)
+Installed along with PostGIS is a graphic user interface "PostGIS Shapefile Import/Export Manager" utility for importing `shapefiles` directly into PostGIS. This utility is called "shp2pgsql-gui", and can be found in the PostgreSQL program directory (In a Windows environment, this should look similar to the following:`C:\Program Files\PostgreSQL\10\bin\postgisgui`). Open this utility, and update the information in the "View connection details" window (see table above for defaults). Then, open the "Add File" menu, and navigate to the directory in which you saved the "SVI 2014 Tract Shapefile (US)" file, and select the shapefile. After these steps, press the "import" button, and the shapefile should be loaded into your PostgreSQL, with an appropriate spatial index. You must enter one final SQL statement in order to complete the database/data setup process:
+```
+SELECT UpdateGeometrySRID('svi2014_us', 'geom', 4269);
+```
 
+This statement updates the table coordinate system so the data can be projected onto the leaflet output map. 
 
-Create database
-Update functions
-Import Shapefile
-
+Setup Section `DOL:M`
 
 # Methods
 
