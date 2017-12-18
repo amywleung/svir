@@ -142,6 +142,7 @@ function(input, output) {
     )
   })
 
+
   observeEvent(input$shp, {
     if (!is.null(input$shp)) {
       output$down = downloadHandler(
@@ -180,16 +181,26 @@ function(input, output) {
     }
   })
 
-  observeEvent(input$shp, {
-    output$table = DT::renderDataTable(
-      slot(uploadShpfile(), "data")[, input$show_vars, drop = FALSE],
-      options = list(
-        lengthMenu = c(10, 20, 30, 40, 50, 75, 100),
-        pageLength = 5
-      ),
-      filter = 'top'
+
+  observeEvent(input$shp,
+  if (!is.null(uploadShpfile())) {
+        output$table = DT::renderDataTable(
+          if (input$selectDT == 1){
+            slot(uploadShpfile(), "data")[, c("tractce", input$show_vals), drop = FALSE]
+          }
+          else if (input$selectDT == 2){
+            slot(uploadShpfile(), "data")[, c("tractce", input$show_flags), drop = FALSE]
+          },
+        options = list(
+          lengthMenu = c(10, 20, 30, 40, 50, 75, 100),
+          pageLength = 10,
+          class = 'cell-border stripe'
+        ),
+        filter = 'top'
+        )
+      }
     )
-  })
+
 
   # intialize empty reactive values list
   rv <- reactiveValues(clickedShape = NULL)

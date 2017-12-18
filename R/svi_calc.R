@@ -17,6 +17,12 @@
 
 svi_calc <- function(con, res) {
 
+  res$rpl_theme1_US <- res$rpl_theme1
+  res$rpl_theme2_US <- res$rpl_theme2
+  res$rpl_theme3_US <- res$rpl_theme3
+  res$rpl_theme4_US <- res$rpl_theme4
+  res$rpl_themes_US <- res$rpl_themes
+
   # Assign vector of column names
   clmNames <- names(res)
   clmNames <- clmNames[!clmNames == 'wkb_geometry']
@@ -26,6 +32,8 @@ svi_calc <- function(con, res) {
 
   nPop_res <- res[(res$e_totpop=="0"),]
   res <- res[!(res$e_totpop=="0"),]
+
+  slot(res, "data")[slot(res, "data") == -999] <- NA
 
   # Note on column prefix meanings:
   #   'e_'    - indicates raw number estimate
@@ -50,7 +58,7 @@ svi_calc <- function(con, res) {
 
   # Calculate rank value of 15 tier 1 variables (except pci) ("ep_" columns), assign values to "epl" columns
   for(i in 1:length(ep_nms)){
-    res[[paste(epl_nms[i])]] <- (rank(res[[paste(ep_nms[i])]], ties.method = "max")-1)/(length(res$gid)-1)
+    res[[paste(epl_nms[i])]] <- na.omit((rank(res[[paste(ep_nms[i])]], ties.method = "max")-1)/(length(res$gid)-1))
   }
 
   # Calculate rank value of 'pci'
@@ -80,12 +88,12 @@ svi_calc <- function(con, res) {
 
   # Sum 15 variable percentile ranks for each theme to `theme#_epl` column
   for(i in 1:4){
-    res[[paste(spl_nms[i])]] <- apply(slot(res, "data")[epl_nms_split[[i]]], 1, sum)
+    res[[paste(spl_nms[i])]] <- rowSums(slot(res, "data")[,epl_nms_split[[i]]])
   }
 
   # Calculate rank value of 4 tier 2 thematid domains ("spl_" columns), assign values to "rpl_" columns
   for(i in 1:length(spl_nms)){
-    res[[paste(rpl_nms[i])]] <- (rank(res[[paste(spl_nms[i])]], ties.method = "max")-1)/(length(res$gid)-1)
+    res[[paste(rpl_nms[i])]] <- na.omit((rank(res[[paste(spl_nms[i])]], ties.method = "max")-1)/(length(res$gid)-1))
   }
 
   f_theme_nms <- gsub("spl_", "f_", spl_nms)
@@ -97,14 +105,15 @@ svi_calc <- function(con, res) {
   }
 
   # Sum 4 thematic domains for overall SVI values to `spl_themes` column
-  res$spl_themes <- apply(slot(res, "data")[c("spl_theme1", "spl_theme2","spl_theme3", "spl_theme4")], 1, sum)
+  res$spl_themes <- rowSums(slot(res, "data")[,c("spl_theme1", "spl_theme2","spl_theme3", "spl_theme4")])
 
   # Calculate rank value of overall SVI (`spl_themes`), assign values to `rpl_themes`
-  res$rpl_themes <- (rank(res$spl_themes, ties.method = "max")-1)/(length(res$gid)-1)
+  res$rpl_themes <- na.omit((rank(res$spl_themes, ties.method = "max")-1)/(length(res$gid)-1))
 
   # Sum Flags to calculate total number of flags at each census tract
-  res$f_total <- apply(slot(res, "data")[c(f_theme_nms, f_nms)], 1, sum)
+  res$f_total <- rowSums(slot(res, "data")[,c(f_theme_nms, f_nms)])
 
+  slot(res, "data")[is.na(slot(res, "data"))] <- -999
 
   # Add the non-populated census tracts back into the main spatialpolygonsdataframe
   res <- rbind(res, nPop_res)

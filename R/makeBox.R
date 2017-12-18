@@ -25,11 +25,11 @@ makeBox <- function(shp, uid) {
   b3 <- "Household Composition & Disability"
   b4 <- "Minority Status & Language"
   b5 <- "Housing & Transportation"
-  o1vals <- dat[["rpl_themes"]][!dat[["rpl_themes"]] == -999]
-  o2vals <- dat[["rpl_theme1"]][!dat[["rpl_theme1"]] == -999]
-  o3vals <- dat[["rpl_theme2"]][!dat[["rpl_theme2"]] == -999]
-  o4vals <- dat[["rpl_theme3"]][!dat[["rpl_theme3"]] == -999]
-  o5vals <- dat[["rpl_theme4"]][!dat[["rpl_theme4"]] == -999]
+  o1vals <- dat[["rpl_themes_US"]][!dat[["rpl_themes_US"]] == -999]
+  o2vals <- dat[["rpl_theme1_US"]][!dat[["rpl_theme1_US"]] == -999]
+  o3vals <- dat[["rpl_theme2_US"]][!dat[["rpl_theme2_US"]] == -999]
+  o4vals <- dat[["rpl_theme3_US"]][!dat[["rpl_theme3_US"]] == -999]
+  o5vals <- dat[["rpl_theme4_US"]][!dat[["rpl_theme4_US"]] == -999]
   b1vals <- dat[["rpl_themes"]][(dat$gid == uid) &
                                   (!dat[["rpl_themes"]] == -999)]
   b2vals <- dat[["rpl_theme1"]][(dat$gid == uid) &

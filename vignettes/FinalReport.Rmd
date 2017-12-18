@@ -42,15 +42,53 @@ The variability across communities with respect to demographics, socioeconomic s
 [Cutter et al.'s](http://onlinelibrary.wiley.com/doi/10.1111/1540-6237.8402002/abstract) 2003 SoVI laid the foundation for the most recent iteration of the Social Vulnerability Index (SVI), developed jointly by the Centers for Disease Control and Prevention's (CDC) National Center for Environmental Health, Office of Terrorism Preparedness and Emergency
 Response (OTPER), and the Agency for Toxic Substances and Disease Registry's (ATSDR) Geospatial Research, Analysis, and Services Program in 2011 [(Centers for Disease Control and Prevention et al.)](https://svi.cdc.gov/Documents/Data/A%20Social%20Vulnerability%20Index%20for%20Disaster%20Management.pdf). To date, this SVI from the CDC and ATSDR is considered one of the few, if only, authoritative sources within the emergency and disaster management industry in pre- and post-disaster activities. Despite its prominent role as an authoritative source on social vulnerability, the SVI in its current form does not take into account the variability of different communities. Rather, it is a ranked measure that compares relative social vulnerability calculated at the nation and statewide scales [(Centers for Disease Control and Prevention et al. 2011)](https://svi.cdc.gov/Documents/Data/A%20Social%20Vulnerability%20Index%20for%20Disaster%20Management.pdf). In other words, social vulnerability is calculated using a percentile ranking method that ranks **all** US census tracts against one another for the nationwide SVI product (e.g. social vulnerability in rural Kansas is directly compared to social vulnerability in Chicago), or against other census tracts within a state for the statewide product (e.g. social vulnerability in upstate New York is directly compared to social vulnerability in New York City). Analytical scales of either existing data product may still be too coarse to pick up on any potential regional variation in demographic, socioeconomic, and accessibility characteristics. Additionally, the inclusion of all US census tracts in an SVI calculation for a regional disaster would make little sense. For example, if tornadoes affected rural Oklahoma, it would not be appropriate to include SVI rankings for census tracts in Washington state. 
 
-Based on previous findings from [Cutter et al. (2003)](http://onlinelibrary.wiley.com/doi/10.1111/1540-6237.8402002/abstract), it is clear that the 2011 SVI also suffers from the same Modifiable Areal Unit Problem (MAUP) when ranking areal units at a national or statewide scale. That is, SVI scores vary at differing levels of analysis due to the potential variability in community demographics and other socioeconomic and accessibility variables at local, state, and national levels. The primary aim of this project is to address the MAUP using a Shiny web application that dynamically calculates SVI for a user's specified Area of Interest (AOI). The user can upload a shapefile as points, lines, or polygons, and the resulting regional SVI can be downloaded as a .CSV or shapefile. While this process takes into account the [Cutter et al. (2003)](http://onlinelibrary.wiley.com/doi/10.1111/1540-6237.8402002/abstract) consideration of local variability, it introduces the possibility that there may be minimal variation in vulnerability characteristics at a finer scale. To address these particular cases, the web application also hosts an interactive dashboard illustrating each of the 15 thematic indicators for a selected census tract, and markers indicating where each thematic domain of the selected census tract falls in relation to the thematic domains in the nationwide dataset. This visualization is intended to provide users with a relative understanding of where a particular census tract falls in relation to its comparable national measure. The interactive SVI tool completed for this course is meant to be a prototype for a more refined SVI tool that allows users to adjust weighting schemes for each thematic indicator or thematic domain. 
+Based on previous findings from [Cutter et al. (2003)](http://onlinelibrary.wiley.com/doi/10.1111/1540-6237.8402002/abstract), it is clear that the 2011 SVI also suffers from the same Modifiable Areal Unit Problem (MAUP) when ranking areal units at a national or statewide scale. That is, SVI scores vary at differing levels of analysis due to the potential variability in community demographics and other socioeconomic and accessibility variables at local, state, and national levels. The primary aim of this project is to address the MAUP using a Shiny web application that dynamically calculates SVI for a user's specified Area of Interest (AOI). The user can upload a shapefile as points, lines, or polygons, and the resulting regional SVI can be downloaded as a .CSV or shapefile. While this process provides a means to examine SVI [Cutter et al. (2003)](http://onlinelibrary.wiley.com/doi/10.1111/1540-6237.8402002/abstract) without the influence of non-local census tract vulnerability, it introduces a new problem. Because the index is a relative measure, all census tracts considered will always fall on a scale from 0 to 1, regardless of true variability between them. Thus, all areas in an AOI are similarly vulnerable, an application of this regional calculation would result in index values that suggest disparate vulnerabilities, when in fact the true degree of variability in social vulnerability is negligible. To address these particular cases, the web application also hosts an interactive dashboard illustrating each of the 15 thematic indicators for a selected census tract, and markers indicating where each thematic domain of the selected census tract falls in relation to the thematic domains in the nationwide dataset. This visualization is intended to provide users with a relative understanding of where a particular census tract falls in relation to its comparable national measure. The interactive SVI tool completed for this course is meant to be a prototype for a more refined SVI tool that allows users to adjust weighting schemes for each thematic indicator or thematic domain. 
 
 Introduction Section `DOL:A`
 
 # Methods
 
-## PostgreSQL/PostGIS - necessary for storing large SVI dataset
+## PostgreSQL/PostGIS
+
+Currently, in order to interface with the SVIR package and Shiny application interface, one must have a correctly configured PostgreSQL database, with the PostGIS extension enabled. This is a simple process, and instructions are laid out in this document.
+
+PostgreSQL is a free, open source, and well documented database server. Implementations of PostgreSQL are available for Window, MacOS, and Linux operating systems, all of which have installation documentation through the [Postgres website](https://www.postgresql.org/).
+
+### Installing PostgreSQL
+
+The installer for PostgreSQL can be found on the [downloads page](https://www.postgresql.org/download/) of the PostgreSQL website. This project was created using PostgreSQL version 10.1.2, but versions 9.x should be compatible. Make sure to select the installer, and follow the instructions that are appropriate for your operating system. In the installation process, the authors of this package recommend that you choose to install pgAdmin4, a graphic user interface for managing postgres databases.
+
+At several instances in the setup process, you will be prompted to select default or custom parameters. A user of this packages has two options: input their own choices for these parameters and change the package code appropriately, OR select the input choices specified in the following section. In the latter case, our package will work without modification.
+
+```{r, echo = FALSE}
+Parameters <- c("user", "password", "host", "port", "dbname")
+Defaults <- c("postgres", "gisde2018", "localhost", "5432", "dbname")
+parTable <- cbind(Parameters, Defaults)
+
+kable(parTable, caption = "Parameters and Defaults")
+
+```
+
+### PostGIS
+
+Upon installing PostgreSQL, a prompt should appear for `Stackbuilder`. This utility automatically takes care of software compatability issues, and allows a user to access a multitude of PostgreSQL modules and extensions, including PostGIS. We recommend using `Stackbuilder` to install the PostGIS extension, though it can be completed independently. Therefore, select the PostgreSQL database you have created (identified by the port number). After this, you will have the option of installing various application extensions through `Stackbuilder`, including PostGIS (under the 'Spatial Extensions' category). 
 
 ## Shiny - develop interactive web application for users to upload/download SVI for their AOIs
+
+shiny
+rgdal
+rpostgis
+RPostgreSQL
+sp
+leaflet
+rgeos
+viridis
+stringr
+dplyr
+DT
+leaflet.extras
+plotly
+
 
 ## Packages - discuss importance of each package used, and the functionality used in each
 
@@ -82,11 +120,12 @@ The `launchApp` function launches the Shiny web application by searching the `/a
 
 Fully functional Shiny web app
 Four functions to style and create interactive dashboard, boxplot, calculate SVI, and style leaflet map
+Datatable view of SVI
 Downloadable SVI results
 
 # Discussion
 
 Limitations - many package dependencies (are these absolutely necessary?), users must currently have a postgreSQL/PostGIS db set up exactly like ours for the app to run, rendering large polys takes a long(er) time to run (re: see sandy path shapefile)
-Improvements - add option for user to draw extent polygon as input, add highlight to poly to show which is displayed in dashboard, figure out a workaround to remove dependency on setting up a db exactly like ours
+Improvements - add option for user to draw extent polygon as input, add highlight to poly to show which is displayed in dashboard, figure out a workaround to remove dependency on setting up a db exactly like ours (set up server to host as web service)
 
 #### Note for Dr. Lyndon Estes and Zhiwen Zhu, regarding documentation of the division of labor: where appropriate, division of labor on different tasks is denoted in the following fashion: Amy = `DOL:A`, Max = `DOL:M`, Both Amy and Max = `DOL:B`

@@ -79,3 +79,4 @@ mapStyle <- function(map, data, rpl, flag) {
         lat2 = bbox[4]
       )
 }
+
