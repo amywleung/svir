@@ -103,24 +103,36 @@ Setup Section `DOL:M`
 
 ## PostgreSQL and PostGIS
 
+In total, the dataset in shapefile format is 423MB. By the project's very nature, one should never have to utilize the entire dataset of over 72,000 census tracts. Thus, by storing this dataset in PostgreSQL, one can query by geometry, and subset out exclusively those census tracts within the AOI. In this manner, a much more appropriate volume of data can be loaded into computer memory and manipulated in R.
+
+The SVI shapefile for this project was loaded into PostgreSQL and the preservation of geometries was made possible in PostGIS. The database is currently hosted locally. 
+
 ## Shiny - develop interactive web application for users to upload/download SVI for their AOIs
 
-shiny
-rgdal
-rpostgis
-RPostgreSQL
-sp
-leaflet
-rgeos
-viridis
-stringr
-dplyr
-DT
-leaflet.extras
-plotly
+CheckboxGroupInput
 
 
 ## Packages - discuss importance of each package used, and the functionality used in each
+
+1.  rgdal
+2.  rpostgis
+3.  RPostgreSQL
+4.  sp
+5.  leaflet
+6.  rgeos
+
+7.  `viridis`
+
+    The [veridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html) package allows access to a wide range of color scales for plotting and graphics purposes. In this project, the default "viridis" palette was used to symbolize census tract polygons. 
+
+8.  stringr
+9.  dplyr
+10. `DT`
+
+    The [DT](https://rstudio.github.io/DT/) (or Data-Table) package provides a means of rendering and customize an interactive data-table. In this project, the DT package was used to render two data-tables in the "Data Table" tab.
+
+11. leaflet.extras
+12. plotly
 
 ## Custom Functions
 
