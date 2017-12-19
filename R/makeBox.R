@@ -55,7 +55,7 @@ makeBox <- function(shp, uid) {
                                             line = list(color = "#85fcf8",
                                                         width = 2))) %>%
     layout(margin = list(b = 230), font = list(color = "white"),
-           yaxis = list(title = "Percentile Percentage"),
+           yaxis = list(title = "Percentile Rank"),
            xaxis = list(tickangle = 90)
     )
   p2 <-
