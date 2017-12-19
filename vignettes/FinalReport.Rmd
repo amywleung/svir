@@ -113,7 +113,7 @@ PostgreSQL and PostGIS Section `DOL:M`
 
 The [shiny](https://shiny.rstudio.com/) package provides a framework for developing web applications directly in R. It provides the functionality to create interactive web service components through event observation and reactive inputs and outputs, as well as a plethora of integrated widgets. Shiny provides the foundation upon which this application was built.
 
-The two primary components of this application are the `ui.R` and `server.R` scripts. The `ui.R` script primarily contains two types of functions, inputs and outputs, while the `server.R` script recieves those inputs and generates outputs that are displayed through the `ui.R` script. In the `ui.R` script for this project uses several input functions, including 'select input' (rendered as drop down menus), 'check box group input' (rendered as check boxes), 'radio button input' (rendered as radio buttons), 'file input' (rendered as an upload file button). Values associated with these inputs change depending on a users selection (e.g. a radio button), and that determines the nature of an action in the `server.R` script and ultimately the contents of an output variable (e.g. generate specific file type for download). In the case of the custom functions in this package (e.g. `mapStyle`), inputs determine the parameters that go into the function, and the product of that function becomes the output value that is returned to a rendering function in the `ui.R` script.
+The two primary components of this application are the `ui.R` and `server.R` scripts. The `ui.R` script primarily contains two types of functions, inputs and outputs, while the `server.R` script recieves those inputs and generates outputs that are displayed through the `ui.R` script. The `ui.R` script for this project uses several input functions, including 'select input' (rendered as drop down menus), 'check box group input' (rendered as check boxes), 'radio button input' (rendered as radio buttons), 'file input' (rendered as an upload file button). Values associated with these inputs change depending on a users selection (e.g. a radio button), and that determines the nature of an action in the `server.R` script and ultimately the contents of an output variable (e.g. generate specific file type for download). In the case of the custom functions in this package (e.g. `mapStyle`), inputs determine the parameters that go into the function, and the product of that function becomes the output value that is returned to a rendering function in the `ui.R` script.
 
 Shiny Section `DOL:M`
 
@@ -154,7 +154,11 @@ Shiny Section `DOL:M`
 
 9. `plotly`
 
-    The [plotly](https://www.rdocumentation.org/packages/plotly/versions/4.7.1) package allows for interactive plots in web-browser that appear similar to plots generated from the `ggplot2` package. In this project, `plotly` was used to generate the interactive dashboard, including bar charts showing the values of SVI variables at each census tract, as well as box-plots showing the distribution of regional census tract values at the nation-wide scale. 
+    The [plotly](https://www.rdocumentation.org/packages/plotly/versions/4.7.1) package allows for interactive plots in web-browser that appear similar to plots generated from the `ggplot2` package. In this project, `plotly` was used to generate the interactive dashboard, including bar charts showing the values of SVI variables at each census tract, as well as box-plots showing the distribution of regional census tract values at the nation-wide scale.
+    
+10. `shinythemes`
+
+    The [shinythemes](https://www.rdocumentation.org/packages/shinythemes/versions/1.1.1) package 
 
 Packages Section `DOL:M`
 
@@ -235,7 +239,7 @@ As this agency has a wide range of responsibilities, and interacts with numerous
 knitr::include_graphics("../vignettes/figs/examples/madison_mainpage.png")
 ```
 
-
+In this example, one considers the selected census tract in the above screen shot. Overall, the distribution of SVI values for these census tracts ranks quite low on the national scale, with almost 75% of the census tracts ranking below 50th percentile in each of the four thematic domains. If, however, we consider the selected census tract, we can see that not only does it rank highly in the regional SVI, but <i>also</i> in the national SVI. In particular, this census tract ranks poorly in the categories most obviously of importance to an agency responsible for transportation (the Housing & Transportation domain, and No Vehicle and Crowding tier 1 variables). 
 
 
 ### Dallas Tornado Paths
@@ -249,18 +253,7 @@ Results Section `DOL:M`
 
 # Discussion
 
-## Limitations - 
-
-1.  Package Dependencies
-
-2.  users must currently have a postgreSQL/PostGIS db set up exactly like ours for the app to run 
-
-3.  Calculation Time / Polygon Rendering
-
-4.  many attribute fields, difficult to examine all at once in DT
-
-
-## Improvements - 
+## Improvements and Limitations  
 
 1.  Options for AOI Polygon Input
 
@@ -269,22 +262,30 @@ Results Section `DOL:M`
 2.  Highlight Polygon
 
     In its current form, one can populate the dashboard and box-plots with information about a polygon selected from the leaflet map object. Currently, there is no means of tracking which polygon has been selected on the map object. Adding the functionality of a highlighted outline to a polygon after it has been selected will allow a user to more easily identify the geographic location associated with the information displayed in dashboard.
+    
+3.  Select Polygon from Data Table
 
-3.  User AOI Display
+    In its current form, the data tables only serve to view the raw data, and there is no connection between the data table and the leaflet map object. One thing that would dramatically improve analytical capabilities of this application is to allow a user to select a record, or multiple records, and render thir corresponding polygons highlighted on the map object. As the data table columns are sortable, this would allow a user to quickly select those polygons within a certain range for particular variables or thematic domains.
+
+4.  User AOI Display
 
     In its current form, the only features displayed on the leaflet map object are the AOI census tracts with their corresponding SVI values. For analytical purposes, the authors of this package would like to include a check box option to also display the user input AOI. This would allow for greater contextualization of those census tracts that are intersected by the AOI, and would help identify those census tracts that only minimally overlap the AOI.
 
-4.  Local Database / Data Dependence (web service alternative)
+5.  Local Database / Data Dependence (web service alternative)
 
     In its current form, one must have a properly formatted and connected PostgreSQL database, with the appropriate data imported into the database. While the package provides instructions on how to replicate this environment, the tool would be much more widely accessible without this step. Further, the functionalities of this package coule be more widely available if the Shiny application is hosted as a web service. The authors of this package intend to explore the viability of this task in the future. In tandem with the functionality to delineate an AOI by hand on the map object, this would allow for a user to access and utilize this application with no requirements other than a web browser.
 
-5.  Weighting Alternatives for Input Variables
+6.  Weighting Alternatives for Input Variables
 
     In its current form, this package replicates exactly the methodology from the CDC 2014 implementation [(Centers for Disease Control and Prevention et al. 2011)](https://svi.cdc.gov/Documents/Data/2014_SVI_Data/SVI2014Documentation.pdf). In this implementation, all 15 tier 1 input variables contribute equally to their respective thematic domain values. That is, each of the four variables that derive to the "Socio-Economic" domain make up 25% of that domain value, and both of the two variables that derive to the "Minority Status and Language" make up 50% of that domain. This manner of weighting input variables might not be appropriate for all contexts. It would be good to allow for a user specified weight matrix for the different input variables, that could customize a new index based on the SVI, that is designed for particular contexts and applications. 
 
-6.  Margins of Error
+7.  Margins of Error
 
     In its current form, this package works solely with variable estimate values. In addition to the input variable estimate values, there are also margin of error values that define a 90% confidence interval. We would like to incorporate this margin of error, and a methodology for displaying uncertainty within the Shiny application. At this point, the authors of the package have explored some possibilities with colleagues in the Geography department at Clark University. All approaches that have been discussed thus far are extremely computationally intensive, and the methods for displaying such uncertainty are complex. Incorporating these aspects is critically important if this tool is to be used in real world desicion making processes.
+    
+8. Package dependencies
+
+    In its current form, this package is dependent on 10 other packages. While these packages install automatically upon installation of this package, the efficiency of the `svir` package would benefit if some of these dependencies could be avoided. Note: this becomes less relevant if this application is hosted as a publically accessible web service.
     
 Improvements Section `DOL:B`    
 
