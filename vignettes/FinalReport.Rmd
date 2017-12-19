@@ -174,13 +174,13 @@ The `mapStyle` function creates and styles a Leaflet proxy map using a Leaflet m
 
 ### `makeDash`
 
-The `makeDash` function creates and styles a series of bar charts that illustrate the regional SVI Tier 1 variable values of a designated census tract, categorized by thematic domain. This function takes two parameters, "shp" and "uid". The "shp" parameter indicates the data set, and the "uid" parameter is populated by an "on-click" event of a census tract polygon in the leaflet map object.  The bar charts themselves are the output of the `plot_ly` function from the `plotly` package.
+The `makeDash` function creates and styles a series of bar charts that illustrate the regional SVI Tier 1 variable values of a designated census tract, categorized by thematic domain. This function takes two parameters, "shp" and "uid". The "shp" parameter indicates the data set, and the "uid" parameter is populated by an "on-click" event of a census tract polygon in the leaflet map object.  The bar charts themselves are the output of the `plot_ly` function from the `plotly` package. This output argument, "dash", is given to the `plotlyOutput` function in the `ui.R` script.
 
 `makeDash` Section `DOL:M`
 
 ### `makeBox`
 
-
+The `makeBox` function is quite similar to the `makeDash` function, in that it creates and styles a series of charts. These charts illustrate the distribution of thematic domain and overall SVI values of the regional census tracts as they are ranked in the <i>national dataset</i>. The `makeBox` function takes the same two input parameters as the `makeDash` function, "shp" and "uid", both of which retrieve the same information as in the `makeDash` function. The output of this function, "boxplot", is given to the `plotlyOutput` function in the `ui.R` script.
 
 `makeBox` Section `DOL:M`
 
@@ -219,7 +219,7 @@ knitr::include_graphics("../vignettes/figs/examples/sandy_downloadSHP.png")
 Though the analytic capabilities of this Shiny application afford a user a robust means of exploring this data, with such a large area, it is likely a user would wish to further explore and manipulate this data in their own GIS or scripting environment. Therefore, by selecting the ".shp" checkbox, a user can quickly download the data displayed in the `leaflet` map, and explore it at their leisure.
 
 
-### Madison, WI 
+### Transportation Planning Board, Madison, WI 
 
 The Madison Area Transportation Planning Board is an organization that cooperates with the Wisconsin Department of Transportation, the Federal Highway Administration, and the Federal Transit Administration in the transportation planning process for the Madison, WI metropolitan area. This agency is partly responsible for funding allocation for different transportation undertakings, and must comply with state and federal laws. This agency takes part in the planning process for a wide range of transportation related infrastructures, including public transit (buses, trains), air traffic, highways, bicycles, and more. 
 
@@ -235,6 +235,9 @@ As this agency has a wide range of responsibilities, and interacts with numerous
 knitr::include_graphics("../vignettes/figs/examples/madison_mainpage.png")
 ```
 
+
+
+
 ### Dallas Tornado Paths
 
 
@@ -243,11 +246,6 @@ knitr::include_graphics("../vignettes/figs/examples/dallas_mainpage.png")
 ```
 
 Results Section `DOL:M`
-
-Fully functional Shiny web app
-Four functions to style and create interactive dashboard, boxplot, calculate SVI, and style leaflet map
-Datatable view of SVI
-Downloadable SVI results
 
 # Discussion
 
@@ -272,15 +270,19 @@ Downloadable SVI results
 
     In its current form, one can populate the dashboard and box-plots with information about a polygon selected from the leaflet map object. Currently, there is no means of tracking which polygon has been selected on the map object. Adding the functionality of a highlighted outline to a polygon after it has been selected will allow a user to more easily identify the geographic location associated with the information displayed in dashboard.
 
-3.  Local Database / Data Dependence (web service alternative)
+3.  User AOI Display
+
+    In its current form, the only features displayed on the leaflet map object are the AOI census tracts with their corresponding SVI values. For analytical purposes, the authors of this package would like to include a check box option to also display the user input AOI. This would allow for greater contextualization of those census tracts that are intersected by the AOI, and would help identify those census tracts that only minimally overlap the AOI.
+
+4.  Local Database / Data Dependence (web service alternative)
 
     In its current form, one must have a properly formatted and connected PostgreSQL database, with the appropriate data imported into the database. While the package provides instructions on how to replicate this environment, the tool would be much more widely accessible without this step. Further, the functionalities of this package coule be more widely available if the Shiny application is hosted as a web service. The authors of this package intend to explore the viability of this task in the future. In tandem with the functionality to delineate an AOI by hand on the map object, this would allow for a user to access and utilize this application with no requirements other than a web browser.
 
-4.  Weighting Alternatives for Input Variables
+5.  Weighting Alternatives for Input Variables
 
     In its current form, this package replicates exactly the methodology from the CDC 2014 implementation [(Centers for Disease Control and Prevention et al. 2011)](https://svi.cdc.gov/Documents/Data/2014_SVI_Data/SVI2014Documentation.pdf). In this implementation, all 15 tier 1 input variables contribute equally to their respective thematic domain values. That is, each of the four variables that derive to the "Socio-Economic" domain make up 25% of that domain value, and both of the two variables that derive to the "Minority Status and Language" make up 50% of that domain. This manner of weighting input variables might not be appropriate for all contexts. It would be good to allow for a user specified weight matrix for the different input variables, that could customize a new index based on the SVI, that is designed for particular contexts and applications. 
 
-5.  Margins of Error
+6.  Margins of Error
 
     In its current form, this package works solely with variable estimate values. In addition to the input variable estimate values, there are also margin of error values that define a 90% confidence interval. We would like to incorporate this margin of error, and a methodology for displaying uncertainty within the Shiny application. At this point, the authors of the package have explored some possibilities with colleagues in the Geography department at Clark University. All approaches that have been discussed thus far are extremely computationally intensive, and the methods for displaying such uncertainty are complex. Incorporating these aspects is critically important if this tool is to be used in real world desicion making processes.
     
