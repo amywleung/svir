@@ -224,20 +224,26 @@ Though the analytical capabilities of this Shiny application afford a user a rob
 ### Dallas Tornado Paths
 
 
-```{r, out.width = "900px", echo=FALSE}
+```{r, out.width = "900px", echo=FALSE, fig.cap="Regional SVI for Hurricane Sandy - Download" }
 knitr::include_graphics("../vignettes/figs/examples/dallas_mainpage.png")
 ```
 
 
 ### Madison, WI 
 
-```{r, out.width = "900px", echo=FALSE}
+The Madison Area Transportation Planning Board is an organization that cooperates with the Wisconsin Department of Transportation, the Federal Highway Administration, and the Federal Transit Administration in the transportation planning process for the Madison, WI metropolitan area. This agency is partly responsible for funding allocation for different transportation undertakings, and must comply with state and federal laws. This agency takes part in the planning process for a wide range of transportation related infrastructures, including public transit (busses, trains), air traffic, highways, bicycles, and more. 
+
+```{r, out.width = "900px", echo=FALSE, fig.cap="Metro. Planning Area - Madison Area Transportation Planning Board - [Regional Transportation Plan 2050](http://www.madisonareampo.org/planning/documents/RTP_2050_Appendix_D_FINAL.pdf)" }
 knitr::include_graphics("../vignettes/figs/examples/madison_MPOboundary.png")
 ```
 
+As this agency has a wide range of responsibilities, and interacts with numerous other local, state, and federal agencies. As such, it must take into consideration a wide range of variables describing the region for which it is responsible. A tool such as the regional SVI derived in this package might be quite useful to an agency such as the TPB. 
+
 [Metropolitan Planning Office Madison, WI](http://www.madisonareampo.org/planning/RegionalTransportationPlan2050.cfm)
 
-
+```{r, out.width = "900px", echo=FALSE, fig.cap="Metro. Planning Area - Census Tracts SVI" }
+knitr::include_graphics("../vignettes/figs/examples/madison_mainpage.png")
+```
 
 Fully functional Shiny web app
 Four functions to style and create interactive dashboard, boxplot, calculate SVI, and style leaflet map
