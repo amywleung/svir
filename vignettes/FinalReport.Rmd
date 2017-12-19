@@ -169,7 +169,7 @@ CheckboxGroupInput
 
 ### `svi_calc`
 
-The SVI is calculated in the `svi_calc` function using a multi-tiered approach as outlined in the [(Centers for Disease Control and Prevention et al. 2011)](https://svi.cdc.gov/Documents/Data/A%20Social%20Vulnerability%20Index%20for%20Disaster%20Management.pdf) paper. First, an array of raw variables from the 2010 – 2014 American Community Survey (ACS) 5-year estimates at the census tract level are aggregated into 15 thematic indicators, then transformed into percentile ranks. Next, the percentile ranks of the 15 thematic indicators are combined and transformed into percentile ranks of four thematic domains, as follows: Socioeconomic Status, Housing Composition and Disability, Minority Status and Language, and Housing and Transportation. Finally, overall SVI is calculated by summing the percentile ranks of the four thematic domains, then transforming those values into percentile ranks for the final SVI scores. At the end of this process, each of the 15 thematic indicators and four thematic domains are evaluated and the top 10% most vulnerable census tracts are assigned variable flags. These flags act as a mechanism to highlight the census tracts containing the most vulnerable populations for each of the 15 thematic indicators and four thematic domains, preventing these populations from being obscured during the percentile ranking process [(Centers for Disease Control and Prevention et al. 2011)](https://svi.cdc.gov/Documents/Data/A%20Social%20Vulnerability%20Index%20for%20Disaster%20Management.pdf).
+The SVI is calculated in the `svi_calc` function using a multi-tiered approach as outlined in the [(Centers for Disease Control and Prevention et al. 2011)](https://svi.cdc.gov/Documents/Data/A%20Social%20Vulnerability%20Index%20for%20Disaster%20Management.pdf) paper. First, an array of raw variables from the 2010 – 2014 American Community Survey (ACS) 5-year estimates at the census tract level are aggregated into 15 thematic indicators, then transformed into percentile ranks. Next, the percentile ranks of the 15 thematic indicators are combined and transformed into percentile ranks of four thematic domains, as follows: Socioeconomic Status, Housing Composition and Disability, Minority Status and Language, and Housing and Transportation. Finally, overall SVI is calculated by summing the percentile ranks of the four thematic domains, then transforming those values into percentile ranks for the final SVI scores. At the end of this process, each of the 15 thematic indicators and four thematic domains are evaluated, and the top 10% most vulnerable census tracts are assigned variable flags. These flags act as a mechanism to highlight the census tracts containing the most vulnerable populations for each of the 15 thematic indicators and four thematic domains. This allows for a maintained awareness of extreme vulnerabilities in selected variables, that would otherwise be lost in the generazation process that occurs when aggregating variables to thematic domains [(Centers for Disease Control and Prevention et al. 2011)](https://svi.cdc.gov/Documents/Data/A%20Social%20Vulnerability%20Index%20for%20Disaster%20Management.pdf).
 
 `svi_calc` Section `DOL:A`
 
@@ -181,7 +181,11 @@ The `mapStyle` function creates and styles a Leaflet proxy map using a Leaflet m
 
 ### `makeDash`
 
+
+
 ### `makeBox`
+
+
 
 ### `launchApp`
 
@@ -191,7 +195,49 @@ The `launchApp` function launches the Shiny web application by searching the `/a
 
 # Results
 
+## Summary of Results
+
 This project has culminated in the development of a fully functional Shiny application and user interface. This application has several primary component parts: the capacity to upload a shapefile to delimit an AOI, a function to recalculate the full spectrum of SVI values and flags for that AOI, a function to render those SVI values on a webmap interface, a function to render a descriptive dashboard for elements selected from that webmap interface, a series of box plots to further describe the spread of SVI variability within the AOI, an interactive data-table that allows for a tabular view of the SVI data, and the ability to download the correctly formatted SVI data in a comma separated values or shapefile file format.
+
+## Application Examples
+
+Below are multiple examples of use cases for this regional SVI calculation package.
+
+### Hurricane Sandy Path
+
+The 2012 Hurricane Sandy event had significant disruptive and destructive impacts on the United States, primarily in eastern seaboard states, but also inland areas as far as upstate New York, West Virginia, and Ohio. The effects of this storm included ocean storm surges generally between one and three meters in height, high winds, and heavy precipitation. The most heavily affected areas were in coastal New York, and New Jersey, and included floods, power outages, destroyed structures, infrastructure damage, and shoreline erosion. Further inland, high winds, power outages, and heavy snow precipitation were also problematic ([National Hurricane Center Sandy Tropical Cyclone Report](http://www.nhc.noaa.gov/data/tcr/AL182012_Sandy.pdf)).
+
+In this catastrphic event, access to a regional SVI calculation and visualization tool could be useful for planning agencies in order to begin the analytical process of disaster relief allocation. Using only the boundary of Hurricane Sandy's path of destruction through the northeast  United States, one can easily derive such a regional SVI, using this package. Below, one can see the results of uploading such a storm track shapefile into the regional SVI Shiny application.
+
+```{r, out.width = "900px", echo=FALSE, fig.cap="Regional SVI for Hurricane Sandy - Main Page" }
+knitr::include_graphics("../vignettes/figs/examples/sandy_mainpage_flag.png")
+```
+
+This is a very large regional example, and as such, one can pan and zoom to different locations on the map that are of particular interest. In this example, one particular census tract has been highlighted, and its SVI metrics are displaed in the dashboard. As one can see, the overall SVI ranking for this census tract is quite low (.18 on a scale of 0-1). While that statistic implies that this census tract is likely more resiliant to the damages inflicted by this disaster, the dashboard statistics tell a different story. Specifically, there is a flag for the "Mobile Home" category, and the "Population Aged 65+ category is quite high. In a disaster which brought high winds and heavy precipitation, one might consider mobile dwellings to be particularly vulnerable. In addition, populations aged 65+ might be more adversly affected than other populations by extended power outages.
+
+```{r, out.width = "900px", echo=FALSE, fig.cap="Regional SVI for Hurricane Sandy - Download" }
+knitr::include_graphics("../vignettes/figs/examples/sandy_downloadSHP.png")
+```
+
+Though the analytical capabilities of this Shiny application afford a user a robust means of exploring this data, with such a large area, it is likely a user would wish to further explore and manipulate this data in their own GIS or scripting environment. Therefore, by selectingn the ".shp" checkbox, a user can quickly download the data displayed in the `leaflet` map, and explore it at their leisure.
+
+### Dallas Tornado Paths
+
+
+```{r, out.width = "900px", echo=FALSE}
+knitr::include_graphics("../vignettes/figs/examples/dallas_mainpage.png")
+```
+
+
+### Madison, WI 
+
+```{r, out.width = "900px", echo=FALSE}
+knitr::include_graphics("../vignettes/figs/examples/madison_MPOboundary.png")
+```
+
+[Metropolitan Planning Office Madison, WI](http://www.madisonareampo.org/planning/RegionalTransportationPlan2050.cfm)
+
+
 
 Fully functional Shiny web app
 Four functions to style and create interactive dashboard, boxplot, calculate SVI, and style leaflet map
@@ -215,3 +261,5 @@ Methodology for alternatives to WLC for index
 
 
 #### Note for Dr. Lyndon Estes and Zhiwen Zhu, regarding documentation of the division of labor: where appropriate, division of labor on different tasks is denoted in the following fashion: Amy = `DOL:A`, Max = `DOL:M`, Both Amy and Max = `DOL:B`
+
+
