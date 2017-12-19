@@ -114,25 +114,56 @@ CheckboxGroupInput
 
 ## Packages - discuss importance of each package used, and the functionality used in each
 
-1.  rgdal
-2.  rpostgis
-3.  RPostgreSQL
-4.  sp
-5.  leaflet
+1.  `rgdal`
+
+    The [rgdal](https://www.rdocumentation.org/packages/rgdal/versions/1.2-16) package provided our project with the ability to read in a user input shapefile to determine AOI, transform the coordinate reference system of that shapefile, and to output the regional SVI product in shapefile format.
+
+
+2.  `RPostgreSQL`
+
+    The [RPostgreSQL](https://cran.r-project.org/web/packages/RPostgreSQL/index.html) package provides PostgreSQL driver, and the functionality to create the connection object between R and PostgreSQL. In this project, RPostgreSQL was a prerequisite package in order to utilize the `rpostgis` package.
+
+3.  `rpostgis`
+
+    The [rpostgis](https://www.rdocumentation.org/packages/rpostgis/versions/1.3.0/topics/rpostgis) package enables an interface with PostGIS through R, and includes functions to allow for some of the basic functionalities of PostGIS. In this project, the `pgGetGeom` function is used to read in Census Tracts and their associated SVI variable data, from a PostgreSQL database. Specifically, a SQL query is passed to that function, which allows for an intersection operation to occur in the PostgreSQL in order to return only a subset of the national census tract dataset.
+
+4.  `sp`
+
+    The [sp](https://www.rdocumentation.org/packages/sp/versions/1.2-5) package provided the interface for working with S4 spatial data classes. In this project, only the spatialpolygonsdataframe S4 class was used.
+
+5.  `leaflet`
+
+    
+
 6.  rgeos
+
+    Did we ever use the rgeos package?
+    
 
 7.  `viridis`
 
-    The [veridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html) package allows access to a wide range of color scales for plotting and graphics purposes. In this project, the default "viridis" palette was used to symbolize census tract polygons. 
+    The [veridis](https://www.rdocumentation.org/packages/viridis/versions/0.3.4) package allows access to a wide range of color scales for plotting and graphics purposes. In this project, the default "viridis" palette was used to symbolize census tract polygons. 
 
-8.  stringr
-9.  dplyr
+8.  `stringr`
+
+
+
+9.  `dplyr`
+
+
+
 10. `DT`
 
-    The [DT](https://rstudio.github.io/DT/) (or Data-Table) package provides a means of rendering and customize an interactive data-table. In this project, the DT package was used to render two data-tables in the "Data Table" tab.
+    The [DT](https://www.rdocumentation.org/packages/DT/versions/0.2) (or Data-Table) package provides a means of rendering and customize an interactive data-table. In this project, the DT package was used to render two data-tables in the "Data Table" tab.
 
-11. leaflet.extras
-12. plotly
+11. `leaflet.extras`
+
+
+
+12. `plotly`
+
+
+
 
 ## Custom Functions
 
@@ -160,7 +191,7 @@ The `launchApp` function launches the Shiny web application by searching the `/a
 
 # Results
 
-This project has culminated in the development of a fully functional Shiny application and user interface. This application has several primary component parts: the capacity to upload a shapefile to delimit an AOI, a function to recalculate the full specturm of SVI values and flags for that AOI, a function to render those SVI values on a webmap interface, a function to render a descriptive dashboard for elements selected from that webmap interface, a series of box plots to further describe the spread of SVI variability within the AOI, an interactive data-table that allows for a tabular view of the SVI data, and the ability to download the correctly formatted SVI data in a comma separated values or shapefile file format.
+This project has culminated in the development of a fully functional Shiny application and user interface. This application has several primary component parts: the capacity to upload a shapefile to delimit an AOI, a function to recalculate the full spectrum of SVI values and flags for that AOI, a function to render those SVI values on a webmap interface, a function to render a descriptive dashboard for elements selected from that webmap interface, a series of box plots to further describe the spread of SVI variability within the AOI, an interactive data-table that allows for a tabular view of the SVI data, and the ability to download the correctly formatted SVI data in a comma separated values or shapefile file format.
 
 Fully functional Shiny web app
 Four functions to style and create interactive dashboard, boxplot, calculate SVI, and style leaflet map
