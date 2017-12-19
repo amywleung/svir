@@ -107,10 +107,15 @@ In total, the dataset in shapefile format is 423MB. By the project's very nature
 
 The SVI shapefile for this project was loaded into PostgreSQL and the preservation of geometries was made possible in PostGIS. The database is currently hosted locally. 
 
+PostgreSQL and PostGIS Section `DOL:M`
+
 ## Shiny - develop interactive web application for users to upload/download SVI for their AOIs
 
-CheckboxGroupInput
+The [shiny](https://shiny.rstudio.com/) package provides a framework for developing web applications directly in R. It provides the functionality to create interactive web service components through event observation and reactive inputs and outputs, as well as a plethora of integrated widgets. Shiny provides the foundation upon which this application was built.
 
+The two primary components of this application are the `ui.R` and `server.R` scripts. The `ui.R` script primarily contains two types of functions, inputs and outputs, while the `server.R` script recieves those inputs and generates outputs that are displayed through the `ui.R` script. In the `ui.R` script for this project uses several input functions, including 'select input' (rendered as drop down menus), 'check box group input' (rendered as check boxes), 'radio button input' (rendered as radio buttons), 'file input' (rendered as an upload file button). Values associated with these inputs change depending on a users selection (e.g. a radio button), and that determines the nature of an action in the `server.R` script and ultimately the contents of an output variable (e.g. generate specific file type for download). In the case of the custom functions in this package (e.g. `mapStyle`), inputs determine the parameters that go into the function, and the product of that function becomes the output value that is returned to a rendering function in the `ui.R` script.
+
+Shiny Section `DOL:M`
 
 ## Packages
 
@@ -154,7 +159,7 @@ CheckboxGroupInput
 
 10. `DT`
 
-    The [DT](https://www.rdocumentation.org/packages/DT/versions/0.2) (or Data-Table) package provides a means of rendering and customize an interactive data-table. In this project, the DT package was used to render two data-tables in the "Data Table" tab.
+    The [DT](https://www.rdocumentation.org/packages/DT/versions/0.2) (or Data-Table) package provides a means of rendering and customize an interactive data-table. In this project, the DT package was used to render and style two data-tables in the "Data Table" tab.
 
 11. `leaflet.extras`
 
@@ -164,7 +169,7 @@ CheckboxGroupInput
 
     The [plotly](https://www.rdocumentation.org/packages/plotly/versions/4.7.1) package allows for interactive plots in web-browser that appear similar to plots generated from the `ggplot2` package. In this project, `plotly` was used to generate the interactive dashboard, including bar charts showing the values of SVI variables at each census tract, as well as box-plots showing the distribution of regional census tract values at the nation-wide scale. 
 
-Packages Section `DOL:MsessionInfo`
+Packages Section `DOL:M`
 
 ## Custom Functions
 
@@ -202,7 +207,7 @@ The `launchApp` function launches the Shiny web application by searching the `/a
 
 ## Summary of Results
 
-This project has culminated in the development of a fully functional Shiny application and user interface. This application has several primary component parts: the capacity to upload a shapefile to delimit an AOI, a function to recalculate the full spectrum of SVI values and flags for that AOI, a function to render those SVI values on a webmap interface, a function to render a descriptive dashboard for elements selected from that webmap interface, a series of box plots to further describe the spread of SVI variability within the AOI, an interactive data-table that allows for a tabular view of the SVI data, and the ability to download the correctly formatted SVI data in a comma separated values or shapefile file format.
+This project has culminated in the development of a fully functional Shiny application and user interface. This application has several primary component parts: the capacity to upload a shapefile to delimit an AOI, a function to recalculate the full spectrum of SVI values and flags for that AOI, a function to render those SVI values on a leaflet webmap object interface, a function to render a descriptive dashboard for elements selected from that webmap interface, a series of box plots to further describe the spread of SVI variability within the AOI, an interactive data-table that allows for a tabular view of the SVI data, and the ability to download the correctly formatted SVI data in a comma separated values, or shapefile file format.
 
 ## Application Examples
 
@@ -226,13 +231,6 @@ knitr::include_graphics("../vignettes/figs/examples/sandy_downloadSHP.png")
 
 Though the analytic capabilities of this Shiny application afford a user a robust means of exploring this data, with such a large area, it is likely a user would wish to further explore and manipulate this data in their own GIS or scripting environment. Therefore, by selecting the ".shp" checkbox, a user can quickly download the data displayed in the `leaflet` map, and explore it at their leisure.
 
-### Dallas Tornado Paths
-
-
-```{r, out.width = "900px", echo=FALSE, fig.cap="Regional SVI for Hurricane Sandy - Download" }
-knitr::include_graphics("../vignettes/figs/examples/dallas_mainpage.png")
-```
-
 
 ### Madison, WI 
 
@@ -250,6 +248,13 @@ As this agency has a wide range of responsibilities, and interacts with numerous
 knitr::include_graphics("../vignettes/figs/examples/madison_mainpage.png")
 ```
 
+### Dallas Tornado Paths
+
+
+```{r, out.width = "900px", echo=FALSE, fig.cap="Regional SVI for Hurricane Sandy - Download" }
+knitr::include_graphics("../vignettes/figs/examples/dallas_mainpage.png")
+```
+
 Results Section `DOL:M`
 
 Fully functional Shiny web app
@@ -261,18 +266,20 @@ Downloadable SVI results
 
 ## Limitations - 
 
-1.  many package dependencies (are these absolutely necessary?)
+1.  Package Dependencies
 
 2.  users must currently have a postgreSQL/PostGIS db set up exactly like ours for the app to run 
 
-3.  rendering large polys takes a long(er) time to run (re: see sandy path shapefile)
+3.  Calculation Time / Polygon Rendering
 
 4.  many attribute fields, difficult to examine all at once in DT
 
 
 ## Improvements - 
 
-1.  add option for user to draw extent polygon as input
+1.  Options for AOI Polygon Input
+
+    In its current form, the Shiny application only takes one form of input for a user defined AOI. While shapefiles are a very common file format, the application would be more versitile if it could accept different file formats (e.g. geojson, sqlite, kml, etc.). In addition, the `leaflet.extras` package provides a functionality for drawing points, lines, and polygons on a leaflet map object. The authors of the package would like to allow a user to define their AOI simply by drawing a polygon on the map. This functionality would enable a user to interact with the Shiny application without any perpared geospatial information.
 
 2.  Highlight Polygon
 
@@ -280,7 +287,7 @@ Downloadable SVI results
 
 3.  Local Database / Data Dependence (web service alternative)
 
-    In its current form, one must have a properly formatted and connected PostgreSQL database, with the appropriate data imported into the database. While the package provides instructions on how to replicate this environment, the tool would be much more widely accessible without this step. Further, the functionalities of this package coule be more widely available if the Shiny application is hosted as a web service. The authors of this package intend to explore the viability of this task in the future.
+    In its current form, one must have a properly formatted and connected PostgreSQL database, with the appropriate data imported into the database. While the package provides instructions on how to replicate this environment, the tool would be much more widely accessible without this step. Further, the functionalities of this package coule be more widely available if the Shiny application is hosted as a web service. The authors of this package intend to explore the viability of this task in the future. In tandem with the functionality to delineate an AOI by hand on the map object, this would allow for a user to access and utilize this application with no requirements other than a web browser.
 
 4.  Weighting Alternatives for Input Variables
 
