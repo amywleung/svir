@@ -109,7 +109,7 @@ The SVI shapefile for this project was loaded into PostgreSQL and the preservati
 
 PostgreSQL and PostGIS Section `DOL:M`
 
-## Shiny - develop interactive web application for users to upload/download SVI for their AOIs
+## Shiny
 
 The [shiny](https://shiny.rstudio.com/) package provides a framework for developing web applications directly in R. It provides the functionality to create interactive web service components through event observation and reactive inputs and outputs, as well as a plethora of integrated widgets. Shiny provides the foundation upon which this application was built.
 
@@ -158,7 +158,7 @@ Shiny Section `DOL:M`
     
 10. `shinythemes`
 
-    The [shinythemes](https://www.rdocumentation.org/packages/shinythemes/versions/1.1.1) package 
+    The [shinythemes](https://www.rdocumentation.org/packages/shinythemes/versions/1.1.1) package provides arguments to the built in `fluidpage` function in the `shiny` package that creates a custome stylization of shiny applications. This package uses the `slate` custom shiny theme, from the `shinythemes` package.
 
 Packages Section `DOL:M`
 
@@ -239,14 +239,21 @@ As this agency has a wide range of responsibilities, and interacts with numerous
 knitr::include_graphics("../vignettes/figs/examples/madison_mainpage.png")
 ```
 
-In this example, one considers the selected census tract in the above screen shot. Overall, the distribution of SVI values for these census tracts ranks quite low on the national scale, with almost 75% of the census tracts ranking below 50th percentile in each of the four thematic domains. If, however, we consider the selected census tract, we can see that not only does it rank highly in the regional SVI, but <i>also</i> in the national SVI. In particular, this census tract ranks poorly in the categories most obviously of importance to an agency responsible for transportation (the Housing & Transportation domain, and No Vehicle and Crowding tier 1 variables). 
+In this example, one considers the selected census tract in the above screen shot. Overall, the distribution of SVI values for these census tracts ranks quite low on the national scale, with almost 75% of the census tracts ranking below 50th percentile in each of the four thematic domains. If, however, we consider the selected census tract, we can see that not only does it rank highly in the regional SVI, but <i>also</i> in the national SVI. In particular, this census tract ranks poorly in the categories most obviously of importance to an agency responsible for transportation (the Housing & Transportation domain, and the No Vehicle and Crowding tier 1 variables). 
 
 
 ### Dallas Tornado Paths
 
+In this example, one considers the areas affected by several tornadoes in the Dallas - Fort Worth metro area. This example illustrates how the application can handle multiple non-adjacent objects.
 
-```{r, out.width = "900px", echo=FALSE, fig.cap="Regional SVI for Hurricane Sandy - Download" }
+```{r, out.width = "900px", echo=FALSE, fig.cap="Dallas Storm Tracks Map View" }
 knitr::include_graphics("../vignettes/figs/examples/dallas_mainpage.png")
+```
+
+In instances where one considers fewer census tracts, the data table view might be a more helpful way of examining multiple variable values simultaneously. Further, when the data table functionality is expanded in the future, one will be able to sort and select features in the data table, and view their location on the leaflet map object.
+
+```{r, out.width = "900px", echo=FALSE, fig.cap="Dallas Storm Tracks Data Table" }
+knitr::include_graphics("../vignettes/figs/examples/dallas_dataTable.png")
 ```
 
 Results Section `DOL:M`
@@ -287,7 +294,7 @@ Results Section `DOL:M`
 
     In its current form, this package is dependent on 10 other packages. While these packages install automatically upon installation of this package, the efficiency of the `svir` package would benefit if some of these dependencies could be avoided. Note: this becomes less relevant if this application is hosted as a publically accessible web service.
     
-Improvements Section `DOL:B`    
+Improvements and Limitations Section `DOL:B`    
 
 #### Note for Dr. Lyndon Estes and Zhiwen Zhu, regarding documentation of the division of labor: where appropriate, division of labor on different tasks is denoted in the following fashion: Amy = `DOL:A`, Max = `DOL:M`, Both Amy and Max = `DOL:B`
 
