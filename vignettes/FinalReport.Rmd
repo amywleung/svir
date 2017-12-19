@@ -112,7 +112,7 @@ The SVI shapefile for this project was loaded into PostgreSQL and the preservati
 CheckboxGroupInput
 
 
-## Packages - discuss importance of each package used, and the functionality used in each
+## Packages
 
 1.  `rgdal`
 
@@ -164,12 +164,13 @@ CheckboxGroupInput
 
     The [plotly](https://www.rdocumentation.org/packages/plotly/versions/4.7.1) package allows for interactive plots in web-browser that appear similar to plots generated from the `ggplot2` package. In this project, `plotly` was used to generate the interactive dashboard, including bar charts showing the values of SVI variables at each census tract, as well as box-plots showing the distribution of regional census tract values at the nation-wide scale. 
 
+Packages Section `DOL:MsessionInfo`
 
 ## Custom Functions
 
 ### `svi_calc`
 
-The SVI is calculated in the `svi_calc` function using a multi-tiered approach as outlined in the [(Centers for Disease Control and Prevention et al. 2011)](https://svi.cdc.gov/Documents/Data/A%20Social%20Vulnerability%20Index%20for%20Disaster%20Management.pdf) paper. First, an array of raw variables from the 2010 – 2014 American Community Survey (ACS) 5-year estimates at the census tract level are aggregated into 15 thematic indicators, then transformed into percentile ranks. Next, the percentile ranks of the 15 thematic indicators are combined and transformed into percentile ranks of four thematic domains, as follows: Socioeconomic Status, Housing Composition and Disability, Minority Status and Language, and Housing and Transportation. Finally, overall SVI is calculated by summing the percentile ranks of the four thematic domains, then transforming those values into percentile ranks for the final SVI scores. At the end of this process, each of the 15 thematic indicators and four thematic domains are evaluated, and the top 10% most vulnerable census tracts are assigned variable flags. These flags act as a mechanism to highlight the census tracts containing the most vulnerable populations for each of the 15 thematic indicators and four thematic domains. This allows for a maintained awareness of extreme vulnerabilities in selected variables, that would otherwise be lost in the generazation process that occurs when aggregating variables to thematic domains [(Centers for Disease Control and Prevention et al. 2011)](https://svi.cdc.gov/Documents/Data/A%20Social%20Vulnerability%20Index%20for%20Disaster%20Management.pdf).
+The SVI is calculated in the `svi_calc` function using a multi-tiered approach as outlined in the [(Centers for Disease Control and Prevention et al. 2011)](https://svi.cdc.gov/Documents/Data/A%20Social%20Vulnerability%20Index%20for%20Disaster%20Management.pdf) paper. First, an array of raw variables from the 2010 – 2014 American Community Survey (ACS) 5-year estimates at the census tract level are aggregated into 15 thematic indicators, then transformed into percentile ranks. Next, the percentile ranks of the 15 thematic indicators are combined and transformed into percentile ranks of four thematic domains, as follows: Socioeconomic Status, Housing Composition and Disability, Minority Status and Language, and Housing and Transportation. Finally, overall SVI is calculated by summing the percentile ranks of the four thematic domains, then transforming those values into percentile ranks for the final SVI scores. At the end of this process, each of the 15 thematic indicators and four thematic domains are evaluated, and the top 10% most vulnerable census tracts are assigned variable flags. These flags act as a mechanism to highlight the census tracts containing the most vulnerable populations for each of the 15 thematic indicators and four thematic domains. This allows for a maintained awareness of extreme vulnerabilities in selected variables, that would otherwise be lost in the generalization process that occurs when aggregating variables to thematic domains [(Centers for Disease Control and Prevention et al. 2011)](https://svi.cdc.gov/Documents/Data/A%20Social%20Vulnerability%20Index%20for%20Disaster%20Management.pdf).
 
 `svi_calc` Section `DOL:A`
 
@@ -181,11 +182,15 @@ The `mapStyle` function creates and styles a Leaflet proxy map using a Leaflet m
 
 ### `makeDash`
 
+The `makeDash` function creates and styles a series of bar charts that illustrate the regional SVI Tier 1 variable values of a designated census tract, categorized by thematic domain. This function takes two parameters, "shp" and "uid". The "shp" parameter indicates the data set, and the "uid" parameter is populated by an "on-click" event of a census tract polygon in the leaflet map object.  The bar charts themselves are the output of the `plot_ly` function from the `plotly` package.
 
+`makeDash` Section `DOL:M`
 
 ### `makeBox`
 
 
+
+`makeBox` Section `DOL:M`
 
 ### `launchApp`
 
@@ -207,19 +212,19 @@ Below are multiple examples of use cases for this regional SVI calculation packa
 
 The 2012 Hurricane Sandy event had significant disruptive and destructive impacts on the United States, primarily in eastern seaboard states, but also inland areas as far as upstate New York, West Virginia, and Ohio. The effects of this storm included ocean storm surges generally between one and three meters in height, high winds, and heavy precipitation. The most heavily affected areas were in coastal New York, and New Jersey, and included floods, power outages, destroyed structures, infrastructure damage, and shoreline erosion. Further inland, high winds, power outages, and heavy snow precipitation were also problematic ([National Hurricane Center Sandy Tropical Cyclone Report](http://www.nhc.noaa.gov/data/tcr/AL182012_Sandy.pdf)).
 
-In this catastrphic event, access to a regional SVI calculation and visualization tool could be useful for planning agencies in order to begin the analytical process of disaster relief allocation. Using only the boundary of Hurricane Sandy's path of destruction through the northeast  United States, one can easily derive such a regional SVI, using this package. Below, one can see the results of uploading such a storm track shapefile into the regional SVI Shiny application.
+In this catastrophic event, access to a regional SVI calculation and visualization tool could be useful for planning agencies in order to begin the analytics involved with disaster relief allocation planning. Using only the boundary of Hurricane Sandy's path of destruction through the northeast  United States, one can easily derive such a regional SVI, using this package. Below, one can see the results of uploading such a storm track shapefile into the regional SVI Shiny application.
 
 ```{r, out.width = "900px", echo=FALSE, fig.cap="Regional SVI for Hurricane Sandy - Main Page" }
 knitr::include_graphics("../vignettes/figs/examples/sandy_mainpage_flag.png")
 ```
 
-This is a very large regional example, and as such, one can pan and zoom to different locations on the map that are of particular interest. In this example, one particular census tract has been highlighted, and its SVI metrics are displaed in the dashboard. As one can see, the overall SVI ranking for this census tract is quite low (.18 on a scale of 0-1). While that statistic implies that this census tract is likely more resiliant to the damages inflicted by this disaster, the dashboard statistics tell a different story. Specifically, there is a flag for the "Mobile Home" category, and the "Population Aged 65+ category is quite high. In a disaster which brought high winds and heavy precipitation, one might consider mobile dwellings to be particularly vulnerable. In addition, populations aged 65+ might be more adversly affected than other populations by extended power outages.
+This is a very large regional example, and as such, one can pan and zoom to different locations on the map that are of particular interest. In this example, one particular census tract has been highlighted, and its SVI metrics are displayed in the dashboard. As one can see, the overall SVI ranking for this census tract is quite low (.18 on a scale of 0-1). While that statistic implies that this census tract is likely more resilient to the damages inflicted by this disaster, the dashboard statistics tell a different story. Specifically, there is a flag for the "Mobile Home" category, and the "Population Aged 65+ category is quite high. In a disaster which brought high winds and heavy precipitation, one might consider mobile dwellings to be particularly vulnerable. In addition, populations aged 65+ might be more adversely affected than other populations by extended power outages.
 
 ```{r, out.width = "900px", echo=FALSE, fig.cap="Regional SVI for Hurricane Sandy - Download" }
 knitr::include_graphics("../vignettes/figs/examples/sandy_downloadSHP.png")
 ```
 
-Though the analytical capabilities of this Shiny application afford a user a robust means of exploring this data, with such a large area, it is likely a user would wish to further explore and manipulate this data in their own GIS or scripting environment. Therefore, by selectingn the ".shp" checkbox, a user can quickly download the data displayed in the `leaflet` map, and explore it at their leisure.
+Though the analytic capabilities of this Shiny application afford a user a robust means of exploring this data, with such a large area, it is likely a user would wish to further explore and manipulate this data in their own GIS or scripting environment. Therefore, by selecting the ".shp" checkbox, a user can quickly download the data displayed in the `leaflet` map, and explore it at their leisure.
 
 ### Dallas Tornado Paths
 
@@ -231,7 +236,7 @@ knitr::include_graphics("../vignettes/figs/examples/dallas_mainpage.png")
 
 ### Madison, WI 
 
-The Madison Area Transportation Planning Board is an organization that cooperates with the Wisconsin Department of Transportation, the Federal Highway Administration, and the Federal Transit Administration in the transportation planning process for the Madison, WI metropolitan area. This agency is partly responsible for funding allocation for different transportation undertakings, and must comply with state and federal laws. This agency takes part in the planning process for a wide range of transportation related infrastructures, including public transit (busses, trains), air traffic, highways, bicycles, and more. 
+The Madison Area Transportation Planning Board is an organization that cooperates with the Wisconsin Department of Transportation, the Federal Highway Administration, and the Federal Transit Administration in the transportation planning process for the Madison, WI metropolitan area. This agency is partly responsible for funding allocation for different transportation undertakings, and must comply with state and federal laws. This agency takes part in the planning process for a wide range of transportation related infrastructures, including public transit (buses, trains), air traffic, highways, bicycles, and more. 
 
 ```{r, out.width = "900px", echo=FALSE, fig.cap="Metro. Planning Area - Madison Area Transportation Planning Board - [Regional Transportation Plan 2050](http://www.madisonareampo.org/planning/documents/RTP_2050_Appendix_D_FINAL.pdf)" }
 knitr::include_graphics("../vignettes/figs/examples/madison_MPOboundary.png")
@@ -245,6 +250,8 @@ As this agency has a wide range of responsibilities, and interacts with numerous
 knitr::include_graphics("../vignettes/figs/examples/madison_mainpage.png")
 ```
 
+Results Section `DOL:M`
+
 Fully functional Shiny web app
 Four functions to style and create interactive dashboard, boxplot, calculate SVI, and style leaflet map
 Datatable view of SVI
@@ -252,19 +259,38 @@ Downloadable SVI results
 
 # Discussion
 
-Limitations - 
-many package dependencies (are these absolutely necessary?)
-users must currently have a postgreSQL/PostGIS db set up exactly like ours for the app to run rendering large polys takes a long(er) time to run (re: see sandy path shapefile)
-many attribute fields, difficult to examine all at once in DT
+## Limitations - 
+
+1.  many package dependencies (are these absolutely necessary?)
+
+2.  users must currently have a postgreSQL/PostGIS db set up exactly like ours for the app to run 
+
+3.  rendering large polys takes a long(er) time to run (re: see sandy path shapefile)
+
+4.  many attribute fields, difficult to examine all at once in DT
 
 
-Improvements - 
+## Improvements - 
 
-add option for user to draw extent polygon as input
-add highlight to poly to show which is displayed in dashboard
-figure out a workaround to remove dependency on setting up a db exactly like ours (i.e. set up server to host as web service)
-Methodology for alternatives to WLC for index
+1.  add option for user to draw extent polygon as input
 
+2.  Highlight Polygon
+
+    In its current form, one can populate the dashboard and box-plots with information about a polygon selected from the leaflet map object. Currently, there is no means of tracking which polygon has been selected on the map object. Adding the functionality of a highlighted outline to a polygon after it has been selected will allow a user to more easily identify the geographic location associated with the information displayed in dashboard.
+
+3.  Local Database / Data Dependence (web service alternative)
+
+    In its current form, one must have a properly formatted and connected PostgreSQL database, with the appropriate data imported into the database. While the package provides instructions on how to replicate this environment, the tool would be much more widely accessible without this step. Further, the functionalities of this package coule be more widely available if the Shiny application is hosted as a web service. The authors of this package intend to explore the viability of this task in the future.
+
+4.  Weighting Alternatives for Input Variables
+
+    In its current form, this package replicates exactly the methodology from the CDC 2014 implementation [(Centers for Disease Control and Prevention et al. 2011)](https://svi.cdc.gov/Documents/Data/2014_SVI_Data/SVI2014Documentation.pdf). In this implementation, all 15 tier 1 input variables contribute equally to their respective thematic domain values. That is, each of the four variables that derive to the "Socio-Economic" domain make up 25% of that domain value, and both of the two variables that derive to the "Minority Status and Language" make up 50% of that domain. This manner of weighting input variables might not be appropriate for all contexts. It would be good to allow for a user specified weight matrix for the different input variables, that could customize a new index based on the SVI, that is designed for particular contexts and applications. 
+
+5.  Margins of Error
+
+    In its current form, this package works solely with variable estimate values. In addition to the input variable estimate values, there are also margin of error values that define a 90% confidence interval. We would like to incorporate this margin of error, and a methodology for displaying uncertainty within the Shiny application. At this point, the authors of the package have explored some possibilities with colleagues in the Geography department at Clark University. All approaches that have been discussed thus far are extremely computationally intensive, and the methods for displaying such uncertainty are complex. Incorporating these aspects is critically important if this tool is to be used in real world desicion making processes.
+    
+Improvements Section `DOL:B`    
 
 #### Note for Dr. Lyndon Estes and Zhiwen Zhu, regarding documentation of the division of labor: where appropriate, division of labor on different tasks is denoted in the following fashion: Amy = `DOL:A`, Max = `DOL:M`, Both Amy and Max = `DOL:B`
 
