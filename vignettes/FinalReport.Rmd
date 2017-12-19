@@ -133,7 +133,7 @@ CheckboxGroupInput
 
 5.  `leaflet`
 
-    
+    The [leaflet](https://www.rdocumentation.org/packages/leaflet/versions/1.1.0) package provides a direct interface in R to the leaflet webmapping JavaScript library. This library allows for the production of interactive web maps, including a base map, and customized data visualization and map-feature pop-ups. 
 
 6.  rgeos
 
@@ -150,7 +150,7 @@ CheckboxGroupInput
 
 9.  `dplyr`
 
-
+    The [dplyr](https://www.rdocumentation.org/packages/dplyr/versions/0.7.3) package
 
 10. `DT`
 
@@ -158,11 +158,11 @@ CheckboxGroupInput
 
 11. `leaflet.extras`
 
-
+    The [leaflet.extras](https://www.rdocumentation.org/packages/leaflet.extras/versions/0.2) package is an extension of the `leaflet` package. The package provides additional functionality available in the JavaScript leaflet package. In this project, the `leaflet.extras` package will be used in the future to allow for a user defined AOI to be drawn on the map. 
 
 12. `plotly`
 
-
+    The [plotly](https://www.rdocumentation.org/packages/plotly/versions/4.7.1) package allows for interactive plots in web-browser that appear similar to plots generated from the `ggplot2` package. In this project, `plotly` was used to generate the interactive dashboard, including bar charts showing the values of SVI variables at each census tract, as well as box-plots showing the distribution of regional census tract values at the nation-wide scale. 
 
 
 ## Custom Functions
